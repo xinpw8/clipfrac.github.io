@@ -1,0 +1,186 @@
+:root {
+    --highlight: #00bbbb;
+    --foreground: #061a1a;
+    --background: #000000;
+    --text: #f1f1f1;
+    --content-max-width: 1200px;
+    --content-padding: 40px;
+    --header-height: 180px;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, -apple-system, sans-serif;
+    background: var(--foreground);  /* this was added */
+    color: var(--text);
+    min-height: 100vh;
+}
+
+pre {
+    background: var(--background);
+    padding: 1.5rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+}
+
+code {
+    font-family: monospace;
+    color: var(--highlight);
+    font-size: 0.9rem;
+}
+
+.highlight-link {
+    color: var(--highlight);
+    text-decoration: none;
+}
+
+.highlight-link:hover {
+    text-decoration: underline;
+}
+
+h1 {
+    color: var(--highlight);
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+h2 {
+    color: var(--text);
+    font-size: 1.8rem;
+    margin: 2rem 0 1rem 0;
+}
+
+p {
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+a {
+    color: var(--highlight);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Game showcase styles*/
+.demo-showcase {
+    margin-bottom: 4rem;
+}
+
+.featured-game {
+    display: block;
+    width: 1920px;  /* or whatever the game's native width is */
+    height: 1080px;
+    margin: 0 auto;
+    border: none;
+}
+
+.featured-game-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 1rem;
+    border-radius: 5px;
+}
+
+.game-info {
+    margin-bottom: var(--spacing);
+}
+
+.game-title {
+    margin: 0 0 1rem;
+}
+
+.game-description {
+    margin-bottom: 1rem;
+}
+
+.control-button {
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    background: var(--highlight);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.control-button:hover {
+    opacity: 0.9;
+}
+
+
+/* Reusable nav box component */
+.nav-box {
+    background: var(--background);
+    padding: 1rem;
+    margin-bottom: 2rem;
+    border-radius: 8px;
+}
+
+.nav-box ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+/* Reusable content container */
+.content {
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    padding: var(--content-padding);
+}
+
+/* Reusable image component */
+.image-container {
+    margin: 2rem 0;
+    text-align: center;
+}
+
+.image-container img {
+    max-width: 100%;
+    height: auto;
+}
+
+.image-container figcaption {
+    color: var(--highlight);
+    margin-top: 0.5rem;
+}
+
+/* Basic responsive rules */
+@media (max-width: 768px) {
+    .nav-box ul {
+        flex-direction: column;
+    }
+}
+
+pre {
+    background-color: var(--foreground);
+    border-radius: 6px;
+    padding: 16px;
+    margin: 20px 0;
+    overflow: auto;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    position: relative;
+}
+
+/* Style the actual code inside */
+pre code {
+    font-size: 14px;
+    line-height: 1.5;
+    display: block;
+    tab-size: 4;
+}
+
+/* Optional: Add a subtle border */
+pre {
+    border: 1px solid var(--highlight);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        :root {
+            --spacing: 2rem;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, sans-serif;
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--spacing);
+        }
+
+        /* Basic content styles */
+        .title-content {
+            margin-bottom: var(--spacing);
+        }
+
+        .section-header {
+            margin: calc(var(--spacing) * 2) 0 var(--spacing);
+            font-size: 1.75rem;
+            color: var(--text);
+        }
+
+        /* Citation section */
+        .citation pre {
+            margin: 0;
+            padding: var(--spacing);
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            white-space: pre-wrap;       /* Wrap text */
+            word-wrap: break-word;       /* Break long words */
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .citation code {
+            background: none;
+            padding: 0;
+            max-width: 100%;
+            display: block;
+        }
+
+        /* Contributors section */
+        .contributor {
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .contributor strong {
+            color: var(--highlight);
+            font-size: 1.1rem;
+        }
+
+        .contributor span {
+            padding-left: var(--spacing);
+            color: var(--text);
+            display: block;
+        }
+
+    </style>
+</head>
+<body>
+    <main class="main-content">
+        <div class="title-content">
+            <p>Pufferlib provides compatibility layers for complex environments, optimized parallel simulation, and ultra fast test environments. All our tools are free and open source, but we do offer priority service packages for companies. Demo environment + agent running live 100% client side in your browser. Hold shift to take control!</p>
+        </div>
+
+        <div class="demo-showcase">
+            <div class="featured-game-container">
+                <iframe src="assets/pong/game.html" class="featured-game" title="Featured Game"></iframe>
+            </div>
+            <div class="game-info">
+                <h3 class="game-title">Pong</h3>
+                <p class="game-description">
+                    A classic reimagined: Play against our reinforcement learned agent or watch AI vs AI matches. Running at 1M+ steps per second directly in your browser.
+                </p>
+                <div class="demo-controls">
+                    <button class="control-button" onclick="randomizeGame()">
+                        ⚄ Try Another Env
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <section class="citation">
+            <h2 class="section-header">Citation</h2>
+            <pre><code>@misc{suarez2024pufferlibmakingreinforcementlearning,
+      title={PufferLib: Making Reinforcement Learning
+          Libraries and Environments Play Nice},
+      author={Joseph Suarez},
+      year={2024},
+      eprint={2406.12905},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2406.12905},
+}</code></pre>
+        </section>
+
+        <h2 class="section-header">Contributors</h2>
+        <div class="contributors">
+            <div class="contributor">
+                <strong>Joseph Suarez</strong>
+                <span>Founder & Head Puffer. Writes a lot of code.</span>
+            </div>
+            <div class="contributor">
+                <strong>thatguy</strong>
+                <span>Several performance improvements w/ torch compilation, major pokerl contributor.</span>
+            </div>
+            <div class="contributor">
+                <strong>Kyoung Whan Choe (최경환)</strong>
+                <span>Mujoco bindings, Testing and bug fixes.</span>
+            </div>
+            <div class="contributor">
+                <strong>Spencer Cheng</strong>
+                <span>Go, Connect4, TripleTriad</span>
+            </div>
+            <div class="contributor">
+                <strong>Daniel Addis</strong>
+                <span>Enduro, testing, bug fixes, outreach, recruitment; major pokerl contributor.</span>
+            </div>
+            <div class="contributor">
+                <strong>Leanke</strong>
+                <span>Major pokerl contributor.</span>
+            </div>
+            <div class="contributor">
+                <strong>Jake Forsey</strong>
+                <span>Connect4 rewrite with fast minmax AI opponent</span>
+            </div>
+            <div class="contributor">
+                <strong>David (dmoore101)</strong>
+                <span>Improved breakout physics</span>
+            </div>
+            <div class="contributor">
+                <strong>haterade</strong>
+                <span>Website design for demo page</span>
+            </div>
+            <div class="contributor">
+                <strong>arb8020</strong>
+                <span>Website improvements for environment demos</span>
+            </div>
+            <div class="contributor">
+                <strong>David Bloomin</strong>
+                <span>CARBS integration improvements, 0.4 policy pool/store/selector</span>
+            </div>
+            <div class="contributor">
+                <strong>Nick Jenkins</strong>
+                <span>Layout for the system architecture diagram. Adversary.design</span>
+            </div>
+            <div class="contributor">
+                <strong>Andranik Tigranyan</strong>
+                <span>Streamline and animate the pufferfish. Hire him on UpWork if you like what you see here.</span>
+            </div>
+            <div class="contributor">
+                <strong>Sara Earle</strong>
+                <span>Original pufferfish model. Hire her on UpWork if you like what you see here.</span>
+            </div>
+        </div>
+    </main>
+
+    <script src="header.js"></script>
+    <script src="games.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
