@@ -63,4 +63,12 @@ const games = {
         width: 672,
         height: 576,
     },
+    rware: {
+        title: "RWare",
+        description: "Port of the robot warehouse environment RWare to C",
+        thumbnail: "assets/rware_thumbnail.png",
+        path: "assets/rware/game.html",
+        width: 1280,
+        height: 1024,
+    },
 };
