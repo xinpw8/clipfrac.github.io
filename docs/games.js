@@ -69,6 +69,6 @@ const games = {
         thumbnail: "assets/rware_thumbnail.png",
         path: "assets/rware/game.html",
         width: 1280,
-        height: 1024,
+        height: 640,
     },
 };
