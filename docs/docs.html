@@ -11,119 +11,221 @@
         <nav class="nav-box">
             <ul>
                 <li><a href="#post-1">Installation</a></li>
-                <li><a href="#post-2">Quickstart Guide</a></li>
-                <li><a href="#post-3">Making a New Environment</a></li>
+                <li><a href="#post-2">Training Demo</a></li>
+                <li><a href="#post-3">Vectorization</a></li>
                 <li><a href="#post-4">Emulation</a></li>
-                <li><a href="#post-5">Vectorization</a></li>
-                <li><a href="#post-6">Environments</a></li>
+                <li><a href="#post-5">Policies</a></li>
+                <li><a href="#post-6">Ocean Environments</a></li>
+                <li><a href="#post-7">Third Party Environments</a></li>
             </ul>
         </nav>
 
- 
+
+        <p>PufferLib is a library for sane and simple reinforcement learning. Our key features are:</p>
+                <ul>
+                    <li><strong>Clean PuffeRL:</strong> Our training demo is a turbocharged version of CleanRL's PPO + LSTM with severalfold performance improvements and major quality of life upgrades. Train at 1M+ steps/second and easily run hyperparameter sweeps powered by CARBS on dozens of environments.
+                    <li><strong>Vectorization:</strong> Synchronous and asynchronous parallel simulation at millions of steps per second. Our multiprocessing backend has native multiagent support and can be over 10x faster than Gymnasium's for some environments.</li>
+                    <li><strong>Emulation:</strong> Compatibility tools that make working with complex environments a breeze. Your environment will still be in Gymnasium/PZ format, but it will use a subset of the API that is easier for most libraries to deal with. Even if you use nothing else from PufferLib, this layer is worth your time.</li>
+                    <li><strong>Ocean:</strong> Our first-party suite of ultra performant environments written in C. They use our native PufferEnv API and each run 1M+ steps/second per CPU core. New environment contributions welcome!</li>
+                </ul>
+
+                <p>This tutorial contains everything you need to start doing RL 100x faster than most of the field. We also highly encourage you to read the PufferLib source. It's not like other RL libraries: PufferLib does what it does in a few thousand lines of very simple code. It is also much easier to get help when you're stuck. Our <a href="https://discord.gg/puffer" target="_blank">Discord</a> community is active and helpful.</p>
+            </header>
+        </article>
+
+
         <article id="post-1" class="blog-post">
             <header class="post-header">
                 <h1>Installation</h1>
             </header>
-            <p>Choose the installation method that best suits your needs.</p>
-
             <h2>PufferTank (Recommended)</h2>
-            <p><a href="https://github.com/pufferai/puffertank" target="_blank">PufferTank</a> is a GPU container with PufferLib and dependencies for all environments in the registry, including some that are slow and tricky to install.</p>
+            <p><a href="https://github.com/pufferai/puffertank" target="_blank">PufferTank</a> is a prebuilt GPU Docker image with PufferLib and dependencies for all environments in the registry, including some that are slow and tricky to install.</p>
+            <pre><code>git clone https://github.com/pufferai/puffertank
+cd puffertank
+
+# Get a shell. Will download the ~12GB image on first run.
+bash docker.sh test</code></pre>
             <div class="info-box">
-                <p>If you have not used containers before and just want everything to work, clone the repository and open it in VSCode. You will need to install the Dev Container plugin as well as Docker Desktop. VSCode will then detect the settings in .devcontainer and set up the container for you.</p>
+                <p>If you have not used containers before and just want everything to work, clone the repository and open it in VSCode. You will need to install the Dev Container plugin as well as Docker Desktop. VSCode will then detect the settings in .devcontainer and set up the container for you. Neovim (btw) is also included.</p>
             </div>
 
-            <h2>Pip Installation</h2>
+            <h2>Pip Installation (core only, no training demo)</h2>
             <p>PufferLib is available as a standard pip package:</p>
-            <pre><code>pip install pufferlib</code></pre>
-            <p>To install additional environments and frameworks:</p>
-            <pre><code>pip install pufferlib[nmmo,cleanrl]</code></pre>
+            <pre><code>pip install pufferlib
+
+# Extras for tutorial
+pip install pufferlib[cleanrl,atari]</code></pre>
 
             <h2>Source Installation</h2>
             <pre><code>git clone https://github.com/pufferai/pufferlib
 cd pufferlib
-pip install -e .</code></pre>
-            <p>Add optional dependencies:</p>
-            <pre><code>pip install -e .[nmmo,cleanrl]</code></pre>
-        </article>
+pip install -e .
 
+# Extras for tutorial
+pip install -e .[cleanrl,atari]</code></pre>
+        </article>
 
         <article id="post-2" class="blog-post">
             <header class="post-header">
-                <h1>Quickstart Guide</h1>
-                <p>When you install the PufferLib pip package, you are getting our core tools. The main ones are:</p>
-                <ul>
-                    <li><strong>Emulation:</strong> A compatibility layer that makes environments faster and easier to work with, in or ourside of PufferLib. This was the initial inspiration for PufferLib. Use it by wrapping your environment in pufferlib.emulation.GymnasiumPufferEnv or PettingZooPufferEnv. Your environment will still be in Gymnasium/PZ format, but it will use a subset of the API that is easier for most libraries to deal with.</li>
-                    <li><strong>Vectorization:</strong> Fast parallelization for your environments. We provide pufferlib.vector.Serial/Multiprocessing/Ray, as well as a PufferLib.vector.make function for convenience. Our Multiprocessing implementation can be over 10x faster than Gymnasium's for some environments, and you will almost always at least get a noticeable speedup.</li>
-                    <li><strong>Ocean:</strong> Our first-party suite of ultra performant environments written in C. They use our native PufferEnv API and each run 1M+ steps/second per CPU core. Import each env directly or use pufferlib.environments.ocean.env_creator(name).</li>
-                </ul>
-
-                <p>That's the core API surface. Excluding the code for individual environments, it's only around 1500 lines total. Emulation is one file, vectorization is another, and the native environment API is a 100 line class. Most of the other code in PufferLib is there to support specific legacy environments that researchers still use, or to improve compatibility with other libraries.</p>
-
-                <p>When you install PufferLib from GitHub, you also get the latest training demos. These are not included in the Pip package because they are based on CleanRL, which is designed to be part of user space. Run the demo.py file with --help to see all the options. This is a responsive interface, so if you specify a specific --env, you will see options for that environment. The demo file is just a wrapper around clean_pufferl, our customized version of CleanRL's PPO + LSTM implementation, which is capable of training at over 1M steps per second. Additionally, we provide a nice local dashboard that renders in your terminal, WandB integration, and the CARBS algorithm for hyperparameter sweeps. See config/env_name.ini hyperparameters. Here's how to run a quick training demo:</p>
-
-                <pre><code>python demo.py --env ocean_breakout --mode train --vec native</code></pre>
-
-                <p>You can save to wandb with --track (add your username to the args in demo.py first) and run a hyperparameter sweep with --mode sweep_carbs. To watch your trained policy, set --mode eval --eval-model-path experiments/exp_name/your_checkpoint.pt.</p>
-
-                <p>For a simpler demo, check out cleanrl_ppo_atari.py, which is copied from CleanRL. Only a few line changes were required to integrate PufferLib's faster Atari binding and vectorization. You can do the same with any algorithm of your choice.</p>
+                <h1>Training Demo</h1>
             </header>
-        </article>
+ 
+            <p>PufferLib includes a few different training scripts. You will notice that they are in the base repository, not in the pip package. This is because they are based on CleanRL, which is not meant to be packaged. Rather, it is a white-box library that is meant to be copied and edited to suit your needs. Integrating PufferLib only requires changing a few lines:</p>
+            <pre><code>python cleanrl_ppo_atari.py</code></pre>
+            <p>This is already much faster than the original CleanRL code, but it is still several times slower than our main training demo. Some basics:</p>
+            <pre><code>python demo.py
+    --mode [train, eval, sweep-carbs]
+    --env [env_name]
+    --vec [serial, multiprocessing, native, ray]
+    --track # Track on Weights and Biases. Set your username in demo.py
+    --help # display a full list of options
 
-        <article id="post-3" class="blog-post">
-            <header class="post-header">
-                <h1>Making a New Environment</h1>
-                <p>PufferLib gives you the maximum performance based on the amount of engineering effort you are willing to put into your environment. From fastest to slowest:</p>
-                <ul>
-                    <li><strong>Native PufferEnv in C:</strong> All env logic in C. Carefully written C++ or any other language with a good binding to Python is fine too, but we find C the easiest. All of our new Ocean envs are written this way. One nice benefit is that C compiles to WASM, so it is easy to run web demos.</li>
-                    <li><strong>Native PufferEnv in Cython:</strong> All env logic in Cython. This can be as fast as C but requires careful optimization. We provide this option because it is easy for researchers familiar with Python, and we use Cython as a binding layer for C envs anyways, so it is easy to port later.</li>
-                    <li><strong>Native PufferEnv in Python:</strong> Uses our native API but keeps all logic in Python. Because of the way we manage observation memory, this can still be much faster than Gymnasium/PettingZoo</li>
-                    <li><strong>Gymnasium/PettingZoo:</strong>: Write a standard pre-pufferlib environment and use our Gymnasium/PettingZoo emulation layer for fast parallel simulation.</li>
-                    <li><strong>Not using PufferLib:</strong> A return to the dark ages.</li>
-                </ul>
+# Get help
+python demo.py --help
 
-                <p>PufferEnv is a vector format designed to handle multiple copies of your environment. It provides preallocated buffers for observations, rewards, etc. that environments write to directly. This circumvents the need for a lot of slow stacking and concatenation logic normally needed in vector environments. All you have to to is pass a slice of these buffers to your environment and compute observations/rewards etc. directly there. When multiprocessing, PufferLib will allocate these buffers in shared memory, so your observation data will be available on the main process immediately.</p>
+# Get help on a specific environment
+python demo.py --help --env snake
 
-                <p>A minimal example is provided in ocean/sample. Use this as a template for your environment.</p>
+# Train breakout with multiprocessing:
+python demo.py --mode train --env breakout --vec multiprocessing
 
-        </article>
+# Run a hyperparameter sweep on Ocean pong:
+python demo.py --mode sweep-carbs --env pong --vec multiprocessing
 
-            <article id="post-4" class="blog-post">
-                <header class="post-header">
-                    <h1>Emulation</h1>
-                </header>
-                    <p>Complex environments may have heirarchical observations and actions, variable numbers of agents, and other quirks that make them difficult to work with and incompatible with standard reinforcement learning libraries. PufferLib's emulation layer makes every environment look like it has flat observations/actions and a constant number of agents. Here's how it works with NetHack and Neural MMO, two notoriously complex environments.</p>
+# Train Ocean snake with native vectorization and wandb logs:
+python demo.py --mode train --env snake --vec native --track
 
-                    <pre><code>import pufferlib.emulation
+# Set train and env params from cli:
+python demo.py --mode train --env snake --vec native --train.learning_rate 0.001 --env.num_snakes 512
+
+# Eval a pretrained baseline model:
+python demo.py --mode eval --env snake --vec native --baseline
+
+# Eval a local checkpoint:
+python demo.py --mode eval --env snake --vec native --eval-model-path your_model.pt</code></pre>
+           <p>Compared to the original CleanRL code, our demo file (which loads clean_pufferl.py) supports asynchronous on-policy vectorization, better multi-agent training, a convenient cli dashboard, better WandB log and sweeps integration, and more. It's only around 1000 lines of code, most of which is logging.</p>
+       </article>
+       <article id="post-3" class="blog-post">
+           <header class="post-header">
+               <h1>Vectorization</h1>
+           </header>
+                <p>In RL, vectorization refers to the process of simulating multiple copies of an environment in parallel. Our Multiprocessing backend is fast -- much faster than Gymnasium's in most cases. Atari runs 50-60% faster synchronous and 5x faster async by our latest benchmark, and some environments like NetHack can be 10x faster even synchronous, with no API changes. Here's how to create a vectorized environment:</p>
+                        <pre><code>
+
+from pufferlib.environments import atari
+env_creator = atari.env_creator('breakout')
+
+import pufferlib.vector
+vecenv = pufferlib.vector.make(
+    env_creator, # A callable (class or function) that returns an env
+    env_args: None, # A list of arguments to pass to each environment
+    env_kwargs: None, # A list of dictionary keyword arguments to pass to each environment
+    backend: Serial, # pufferlib.vector.[Serial|Multiprocessing|Native|Ray]
+    num_envs: 1, # The total number of environments to create
+    **kwargs # extra backend-specific options
+)
+
+# Make 4 copies of Breakout on the current process (Serial is the default)
+vecenv = pufferlib.vector.make(env_creator, num_envs=4)
+
+# Make 4 copies of Breakout, each on a separate process
+puf_vec = pufferlib.vector.make(env_creator, num_envs=4,
+    backend=pufferlib.vector.Multiprocessing)
+
+# Make 4 copies of Breakout, 2 on each of 2 processes
+puf_vec = pufferlib.vector.make(env_creator, num_envs=4,
+    backend=pufferlib.vector.Multiprocessing, num_workers=2)
+
+# Make 4 copies of Breakout, 2 on each of 2 processes,
+# but only get two observations per step
+puf_vec = pufferlib.vector.make(env_creator, num_envs=4,
+    backend=pufferlib.vector.Multiprocessing, num_workers=2,
+    batch_size=2)
+
+# Make 1024 instances of Ocean breakout on the current process
+from pufferlib.environments.ocean import breakout
+puf_vec = pufferlib.vector.make(breakout.env_creator,
+    backend=pufferlib.vector.Native,
+    env_kwargs=[{'num_agents': 1024}],
+)
+
+# Notice that Native envs handle multiple instances internally.
+# You can still multiprocess/async, but don't make multiple external
+# copies per process.
+vecenv = pufferlib.vector.make(env_creator, num_envs=2,
+    backend=pufferlib.vector.Multiprocessing, batch_size=1)
+
+# Synchronous API - reset/step
+vecenv = pufferlib.vector.make(breakout.env_creator, num_envs=2,
+    backend=pufferlib.vector.Multiprocessing)
+start, steps, TIMEOUT = time.time(), 0, 3
+while time.time() - start < TIMEOUT:
+    puf_vec.step(puf_vec.action_space.sample())
+    steps += 1
+
+vecenv.close()
+print('Puffer FPS:', steps*vecenv.num_envs/TIMEOUT)
+
+# Async API - async_reset, send/recv
+vecenv = pufferlib.vector.make(breakout.env_creator, num_envs=2,
+    backend=pufferlib.vector.Multiprocessing, batch_size=1)
+vecenv.async_reset()
+start, steps, TIMEOUT = time.time(), 0, 3
+while time.time() - start < TIMEOUT:
+    vecenv.recv()
+    vecenv.send(vecenv.action_space.sample())
+    steps += 1
+
+vecenv.close()
+print('Puffer Async FPS:', steps*vecenv.num_envs/TIMEOUT)
+</code></pre>
+            <p>Our vectorization works on almost any Gymnasium/PettingZoo environment, not just the ones we have bound manually. All you have to do is wrap your environment with our Emulation layer, covered in the next section. PufferLib outperforms other vectorization implementations by implementing the following optimizations:</p>
+            <ul>
+                <li><strong>A Python implementation of EnvPool.</strong> Simulates more envs than are needed per batch and returns batches of observations as soon as they are ready. Requires using the async send/recv instead of the sync step API.</li>
+                <li><strong>Multiple environments per worker.</strong> Important for fast environments.</li>
+                <li><strong>Shared memory.</strong> Unlike Gymnasium's implementation, we use a single buffer that is shared across environments.</li>
+                <li><strong>Shared flags.</strong> Workers busy-wait on an unlocked flag instead of signaling via pipes or queues. This virtually eliminates interprocess communication overhead. Pipes are used once per episode to communicate aggregated infos.</li>
+                <li><strong>Zero-copy batching.</strong> Because we use a single buffer for shared memory, we can return observations from contiguous subsets of workers without ever copying observations. Only does not work for full-async mode.</li>
+                <li><strong>Native multiagent support.</strong> It's not an extra wrapper or slow bolt-on feature. PufferLib treats single-agent and multi-agent environments the same. API differences are handled at the emulation level.</li>
+            </ul>
+
+</article>
+    <article id="post-4" class="blog-post">
+        <header class="post-header">
+            <h1>Emulation</h1>
+        </header>
+        <p>Complex environments may have heirarchical observations and actions, variable numbers of agents, and other quirks that make them difficult to work with and incompatible with standard reinforcement learning libraries. PufferLib's emulation layer makes every environment look like it has flat observations/actions and a constant number of agents. Here's how it works with NetHack and Neural MMO, two notoriously complex environments.</p>
+
+        <pre><code>import pufferlib.emulation
 import pufferlib.wrappers
 
 import nle, nmmo
 
 def nmmo_creator():
-  env = nmmo.Env()
-  env = pufferlib.wrappers.PettingZooTruncatedWrapper(env)
-  return pufferlib.emulation.PettingZooPufferEnv(env=env)
+    env = nmmo.Env()
+    env = pufferlib.wrappers.PettingZooTruncatedWrapper(env)
+    return pufferlib.emulation.PettingZooPufferEnv(env=env)
 
 def nethack_creator():
-  return pufferlib.emulation.GymnasiumPufferEnv(env_creator=nle.env.NLE)</code></pre>
+    return pufferlib.emulation.GymnasiumPufferEnv(env_creator=nle.env.NLE)
 
-                    <p>The wrappers give you back a Gymnasium/PettingZoo compliant environment. There is no loss of generality and no change to the underlying environment. You can wrap environments by class, creator function, or object, with or without additional arguments. These wrappers enable us to make some optimizations to vectorization code that would be difficult to implement otherwise. You can choose from a variety of vectorization backends. They all share the same interface with synchronous and asynchronous options.</p>
+env = nethack_creator()
+obs, _ = env.reset()
+print('Emulate observation shape:', obs.shape)
 
-                    <pre><code>import pufferlib.vector
-backend = pufferlib.vector.Serial #or Multiprocessing, Ray
-envs = pufferlib.vector.make(nmmo_creator, backend=backend, num_envs=4)
-
-# Synchronous API - reset/step
-obs, infos = envs.reset()
-
-# Asynchronous API - async_reset, send/recv
-envs.async_reset()
-obs, rewards, terminals, truncateds, infos, env_id, mask = envs.recv()</code></pre>
-
-                    <p>Our backends support asynchronous on-policy sampling through a Python implementation of EnvPool. This makes them *faster* than the implementations that ship with most RL libraries. We suggest Serial for debugging and Multiprocessing for most training runs. Ray is a good option if you need to scale beyond a single machine.</p>
-
-                    <p>PufferLib allows you to write vanilla PyTorch policies and use them with multiple learning libraries. We take care of the details of converting between the different APIs. Here's a policy that will work with *any* environment, with a one-line wrapper for CleanRL.</p>
-
-                    <pre><code>import torch
+# Unflatten to original shape
+structured_obs = obs.view(env.obs_dtype)
+print('Original observation shape:', structured_obs.shape)
+</code></pre>
+        <p>The wrappers give you back a Gymnasium/PettingZoo compliant environment. There is no loss of generality and no change to the underlying environment. You can wrap environments by class, creator function, or object, with or without additional arguments. These wrappers enable us to make some optimizations to vectorization code that would be difficult to implement otherwise.</p>
+    </article>
+    <article id="post-5" class="blog-post">
+        <header class="post-header">
+            <h1>Policies</h1>
+        </header>
+        <p>You don't want another Policy API so we don't have one. Just write normal PyTorch code. We do provide a wrapper for CleanRL compatibility.</p>
+<pre><code>
+import torch
 from torch import nn
 import numpy as np
 
@@ -152,9 +254,9 @@ actions = cleanrl_policy.get_action_and_value(obs)[0].numpy()
 obs, rewards, terminals, truncateds, infos = envs.step(actions)
 envs.close()</code></pre>
 
-                    <p>Optionally, you can class break the forward pass into an encode and decode step, which allows us to handle recurrance for you. So far, the code above is fully general and does not rely on PufferLib support for specific environments. For convenience, we also provide environment hooks with standard wrappers and baseline models. Here's a complete example.</p>
-
-                    <pre><code>import torch
+        <p>Optionally, you can class break the forward pass into an encode and decode step, which allows us to handle recurrance for you. So far, the code above is fully general and does not rely on PufferLib support for specific environments. For convenience, we also provide environment hooks with standard wrappers and baseline models. Here's a complete example.</p>
+<pre><code>
+import torch
 
 import pufferlib.models
 import pufferlib.vector
@@ -173,40 +275,97 @@ actions = cleanrl_policy.get_action_and_value(obs)[0].numpy()
 next_obs, rewards, terminals, truncateds, infos = envs.step(actions)
 envs.close()</code></pre>
 
-                    <p>It's that simple -- almost. If you have an environment with structured observations, you'll have to unpack them in the network forward pass since PufferLib will flatten them in emulation. We provide a utility for this.</p>
+        <p>It's that simple -- almost. Remember the unflatten operation in Emulation? We provide a PyTorch version of that which you'll want to use in any environment with structured observations.</p>
 
-                    <pre><code>dtype = pufferlib.pytorch.nativize_dtype(envs.driver_env.emulated)
+        <pre><code>
+dtype = pufferlib.pytorch.nativize_dtype(envs.driver_env.emulated)
 env_outputs = pufferlib.pytorch.nativize_tensor(obs, dtype)
 print('Packed tensor:', obs.shape)
 print('Unpacked:', env_outputs.keys())</code></pre>
 
-                    <p>That's all you need to get started. The PufferLib repository contains full-length CleanRL scripts with PufferLib integration. Single-agent environments should work with SB3, and other integrations will be based on demand - so let us know what you want!</p>
-                </article>
+    </article>
+    <article id="post-6" class="blog-post">
+        <header class="post-header">
+            <h1>Puffer Ocean: First Party Envs & API</h1>
+        </header>
+        <p>Gymnasium and PettingZoo are great, but they cause fundamental performance limitations that cap enviroments to far below 1M steps/second:</p>
+        <ul>
+            <li>They are single-environment formats, not vector formats. This means that the loop over environments is done in Python.</li>
+            <li>They require you to directly return observations, rather than writing into a shared buffer. This incurs redundant copy operations.</li>
+            <li>There is a different API for single-agent and multi-agent environments. This causes compatibility issues, and the multi-agent API has a lot of Python overhead.</li>
+        </ul>
+        <p>PufferLib ships with <a href="ocean.html">Ocean</a>, our first-party suite of high-performance environments. They are written with our native PufferEnv API, which eliminates traditional bottlenecks. For debugging new code, Ocean also includes specially designed sanity environments that train in seconds and will let you catch 90% of implementation bugs.</p>
 
-            <article id="post-5" class="blog-post">
-                <header class="post-header">
-                    <h1>Vectorization</h1>
-                </header>
+        <p>PufferEnv is a vector format that easily scales to several million steps per second. It is very similar to Gymnasium's VectorEnv, but with some elements preserved from PettingZoo to better support multi-agent envs without inconveniencing single-agent use. The Python binding is included below. The full source is available in ocean/squared.</p>
+        <pre><code>
+'''A simple sample environment. Use this as a template for your own envs.'''
 
-                <p>Our Multiprocessing backend is fast -- much faster than Gymnasium's in most cases. Atari runs 50-60% faster synchronous and 5x faster async by our latest benchmark, and some environments like NetHack can be 10x faster even synchronous, with no API changes. PufferLib implements the following optimizations:</p>
+import gymnasium
+import numpy as np
+
+import pufferlib
+from pufferlib.environments.ocean.squared.cy_squared import CySquared
+
+
+class Squared(pufferlib.PufferEnv):
+    def __init__(self, num_envs=1, render_mode=None, size=11, buf=None):
+        self.single_observation_space = gymnasium.spaces.Box(low=0, high=1,
+            shape=(size*size,), dtype=np.uint8)
+        self.single_action_space = gymnasium.spaces.Discrete(5)
+        self.render_mode = render_mode
+        self.num_agents = num_envs
+
+        super().__init__(buf)
+        self.c_envs = CySquared(self.observations, self.actions,
+            self.rewards, self.terminals, num_envs, size)
+ 
+    def reset(self, seed=None):
+        self.c_envs.reset()
+        return self.observations, []
+
+    def step(self, actions):
+        self.actions[:] = actions
+        self.c_envs.step()
+
+        episode_returns = self.rewards[self.terminals]
+
+        info = []
+        if len(episode_returns) > 0:
+            info = [{
+                'reward': np.mean(episode_returns),
+            }]
+
+        return (self.observations, self.rewards,
+            self.terminals, self.truncations, info)
+
+    def render(self):
+        self.c_envs.render()
+
+    def close(self):
+        self.c_envs.close()
+</code></pre>
+            <p>The key feature here is the allocation of data buffers for observations, rewards, etc. When multiprocessing, PufferLib will place these into a single shared memory tensor, so your data will be available on the main process immediately. In other words, your environment computes observations directly into shared memory with no redundant copies or slow Python glue. The base class is less than 100 lines. We suggest reading it just to see that there is no magic.</p>
+
+            <p>The logic for this environment is imported. It is written in C with an intermediate binding in Cython. This is not part of the API. You can implement environment logic in Python or any other language you like. The only hard requirement is that you write data into the provided self.observations, self.actions, self.rewards, self.terminals, and self.truncations buffers. Additionally, there are two soft requirements that we plan to revisit. First, PufferEnvs must handle multiple environment copies internally. This one is easy to eliminate, but you probably don't want Python running this loop anyways. Second, your environment must handle resets internally. This one is just easier for now, and we will revisit if it becomes an issue.</p>
+
+            <p>A key goal of PufferLib is to give you the maximum performance based on the amount of engineering effort you are willing to put into your environment. Here is a full list of options, from fastest to slowest:</p>
                 <ul>
-                    <li><strong>A Python implementation of EnvPool.</strong> Simulates more envs than are needed per batch and returns batches of observations as soon as they are ready. Requires using the async send/recv instead of the sync step API.</li>
-                    <li><strong>Multiple environments per worker.</strong> Important for fast environments.</li>
-                    <li><strong>Shared memory.</strong> Unlike Gymnasium's implementation, we use a single buffer that is shared across environments.</li>
-                    <li><strong>Shared flags.</strong> Workers busy-wait on an unlocked flag instead of signaling via pipes or queues. This virtually eliminates interprocess communication overhead. Pipes are used once per episode to communicate aggregated infos.</li>
-                    <li><strong>Zero-copy batching.</strong> Because we use a single buffer for shared memory, we can return observations from contiguous subsets of workers without ever copying observations. Only does not work for full-async mode.</li>
-                    <li><strong>Native multiagent support.</strong> It's not an extra wrapper or slow bolt-on feature. PufferLib treats single-agent and multi-agent environments the same. API differences are handled at the emulation level.</li>
-                </ul>
+                <li><strong>Native PufferEnv in C:</strong> All env logic in C. Carefully written C++ or any other language with a good binding to Python is fine too, but we find C the easiest. All of our new Ocean envs are written this way. One nice benefit is that C compiles to WASM, so it is easy to run web demos.</li>
+                <li><strong>Native PufferEnv in Cython:</strong> All env logic in Cython. This can be as fast as C but requires careful optimization. We provide this option because it is easy for researchers familiar with Python, and we use Cython as a binding layer for C envs anyways, so it is easy to port later.</li>
+                <li><strong>Native PufferEnv in Python:</strong> Uses our native API but keeps all logic in Python. Because of the way we manage observation memory, this can still be much faster than Gymnasium/PettingZoo</li>
+                <li><strong>Gymnasium/PettingZoo:</strong>: Write a standard pre-pufferlib environment and use our Gymnasium/PettingZoo emulation layer for fast parallel simulation.</li>
+                <li><strong>Not using PufferLib:</strong> A return to the dark ages.</li>
+            </ul>
+    </article>
 
-                <p>Most of these optimizations are made possible by a hard assumption on PufferLib emulation. This means that we do not need to handle structured data within the vectorization layer itself.</p>
-            </article>
 
-            <article id="post-6" class="blog-post">
+            <article id="post-7" class="blog-post">
                 <header class="post-header">
-                    <h1>Environments</h1>
+                    <h1>Third Party Environments</h1>
                 </header>
 
-                <p>PufferLib ships with Ocean, our first-party testing suite, which will let you catch 90% of implementation bugs in a 10 second training run. We also provide integrations for many environments out of the box. Non-pip dependencies are already set up for you in PufferTank. Several environments also include reasonable baseline policies. Join our Discord if you would like to add setup and tests for new environments or improvements to any of the baselines.</p>
+                <p>You can use any well-behaved environment with PufferLib via a 1-line wrapper. These are just the environments we have gotten around to binding manually. A lot of environments are not well behaved and subtly deviate from the Gymnasium/PettingZoo API, or they use obscure features that most libraries are not designed to handle. Our bindings just help clean this up a bit. Plus, we add any tricky system package dependencies to PufferTank. Feel free to PR new bindings or fixes for existing ones!</p>
+
 
             <div style="display: flex; align-items: center; margin-bottom: 15px;">
                 <div style="flex-shrink: 0; width: 100px; margin-right: 20px;">
@@ -326,6 +485,17 @@ print('Unpacked:', env_outputs.keys())</code></pre>
                 </div>
                 <div>
                     <p><a href="https://github.com/danijar/crafter">Crafter</a> is a top-down 2D Minecraft clone for RL research. It provides pixel observations and relatively long time horizons.</p>
+                </div>
+            </div>
+
+            <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                <div style="flex-shrink: 0; width: 100px; margin-right: 20px;">
+                    <a href="https://github.com/Emerge-Lab/gpudrive" target="_blank">
+                        <img src="https://img.shields.io/github/stars/Emerge-Lab/gpudrive?labelColor=999999&color=66dcdc&cacheSeconds=100000" alt="Star GPUDrive" width="100px">
+                    </a>
+                </div>
+                <div>
+                    <p><a href="https://github.com/Emerge-Lab/gpudrive">GPUDrive</a> GPUDrive is a GPU-accelerated, multi-agent driving simulator that runs at 1 million FPS.</p>
                 </div>
             </div>
 
