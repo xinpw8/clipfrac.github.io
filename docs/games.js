@@ -39,6 +39,14 @@ const games = {
         width: 1080,
         height: 720,
     },
+    tripletriad: {
+	    title: "Triple Triad",
+	    description: "A card game inspired by Final Fantasy",
+	    thumbnail: "assets/tripletriad_thumbnail.png",
+	    path: "assets/tripletriad/game.html",
+	    width: 990,
+	    height: 1000,
+    },
     pong: {
         title: "Pong",
         description: "A classic reimagined: Play against our reinforcement learned agent or watch AI vs AI matches.",
