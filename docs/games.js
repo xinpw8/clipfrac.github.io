@@ -23,14 +23,6 @@ const games = {
         width: 950,
         height: 640,
     },
-    tcg: {
-        title: "TCG",
-        description: "A trading card game environment for testing strategic deck building and card play.",
-        thumbnail: "assets/tcg_thumbnail.png",
-        path: "assets/tcg/game.html",
-        width: 1080,
-        height: 720,
-   },
     snake: {
         title: "Multiagent Snake",
         description: "A multiplayer version of the classic snake game with competitive elements.",
@@ -80,3 +72,24 @@ const games = {
         height: 640,
     },
 };
+
+const wip = {
+    tcg: {
+        title: "TCG",
+        description: "A trading card game environment for testing strategic deck building and card play.",
+        thumbnail: "assets/tcg_thumbnail.png",
+        path: "assets/tcg/game.html",
+        width: 1080,
+        height: 720,
+    },
+    robocode: {
+        title: "Robocode",
+        description: "A port of the Java programming challenge Robocode to C",
+        thumbnail: "assets/robocode_thumbnail.png",
+        path: "assets/robocode/game.html",
+        width: 768,
+        height: 576,
+    },
+}
+
+

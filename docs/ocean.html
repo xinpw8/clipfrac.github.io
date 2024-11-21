@@ -43,6 +43,14 @@
             justify-content: center;
         }
 
+        .wip-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-md);
+            margin: var(--spacing-md) 0;
+            justify-content: center;
+        }
+
         .game-card {
             cursor: pointer;
             transition: transform 0.2s;
@@ -101,6 +109,13 @@
         </p>
         <div class="games-grid">
             <!-- Games populated by JavaScript -->
+        </div>
+        <h2 class="section-header">WIP</h2>
+        <p class="section-description">
+            These environments are not ready yet. Join our Discord to help us finish them!
+        </p>
+        <div class="wip-grid">
+            <!-- WIP populated by JavaScript -->
         </div>
     </main>
     <script src="header.js"></script>

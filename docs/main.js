@@ -19,8 +19,7 @@ function resizeGame() {
     });
 }
 
-function loadGame(gameKey) {
-    const game = games[gameKey];
+function loadGame(game) {
     const container = document.querySelector('.featured-game-container');
     const featured = document.querySelector('.featured-game');
     
@@ -34,7 +33,18 @@ function initializeGames() {
     const grid = document.querySelector('.games-grid');
     if (!grid) return;
     grid.innerHTML = Object.entries(games).map(([key, game]) => `
-        <div class="game-card" onclick="loadGame('${key}')">
+        <div class="game-card" onclick="loadGame(games['${key}'])">
+            <div class="game-thumbnail">
+                <img src="${game.thumbnail}" alt="${game.title}">
+            </div>
+            <span class="game-title">${game.title}</span>
+        </div>
+    `).join('');
+
+    const wip_grid = document.querySelector('.wip-grid');
+    if (!wip_grid) return;
+    wip_grid.innerHTML = Object.entries(wip).map(([key, game]) => `
+        <div class="game-card" onclick="loadGame(wip['${key}'])">
             <div class="game-thumbnail">
                 <img src="${game.thumbnail}" alt="${game.title}">
             </div>
