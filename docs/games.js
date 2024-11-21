@@ -36,7 +36,7 @@ const games = {
         description: "A multiplayer version of the classic snake game with competitive elements.",
         thumbnail: "assets/snake_thumbnail.png",
         path: "assets/snake/game.html",
-        width: 1080,
+        width: 1280,
         height: 720,
     },
     tripletriad: {
