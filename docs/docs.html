@@ -84,25 +84,29 @@ pip install -e .[cleanrl,atari]</code></pre>
 python demo.py --help
 
 # Get help on a specific environment
-python demo.py --help --env snake
+python demo.py --help --env puffer_snake
 
-# Train breakout with multiprocessing:
+# Train breakout with multiprocessing (24 cores):
 python demo.py --mode train --env breakout --vec multiprocessing
 
-# Run a hyperparameter sweep on Ocean pong:
-python demo.py --mode sweep-carbs --env pong --vec multiprocessing
+# Run a hyperparameter sweep on Ocean pong. Requires carbs (github pufferai/carbs):
+# TODO: Clean up CARBS defaults
+python demo.py --mode sweep-carbs --env puffer_pong
 
-# Train Ocean snake with native vectorization and wandb logs:
-python demo.py --mode train --env snake --vec native --track
+# Train Ocean snake with wandb logs:
+python demo.py --env puffer_snake --mode train --track
 
 # Set train and env params from cli:
-python demo.py --mode train --env snake --vec native --train.learning_rate 0.001 --env.num_snakes 512
+python demo.py --env puffer_snake --mode train --train.learning-rate 0.001 --env.vision 3
 
 # Eval a pretrained baseline model:
-python demo.py --mode eval --env snake --vec native --baseline
+python demo.py --env puffer_snake --mode eval --baseline
+
+# Eval an uninitialized policy:
+python demo.py --env puffer_snake --mode eval --baseline
 
 # Eval a local checkpoint:
-python demo.py --mode eval --env snake --vec native --eval-model-path your_model.pt</code></pre>
+python demo.py --env puffer_snake --mode eval --eval-model-path your_model.pt</code></pre>
            <p>Compared to the original CleanRL code, our demo file (which loads clean_pufferl.py) supports asynchronous on-policy vectorization, better multi-agent training, a convenient cli dashboard, better WandB log and sweeps integration, and more. It's only around 1000 lines of code, most of which is logging.</p>
        </article>
        <article id="post-3" class="blog-post">
