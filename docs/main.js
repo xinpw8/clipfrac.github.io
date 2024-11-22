@@ -22,11 +22,31 @@ function resizeGame() {
 function loadGame(game) {
     const container = document.querySelector('.featured-game-container');
     const featured = document.querySelector('.featured-game');
+
+    // Set container size
+    container.style.width = `${game.width}px`;
+    container.style.height = `${game.height}px`;
     
+    // Set iframe size
+    featured.style.width = `${game.width}px`;
+    featured.style.height = `${game.height}px`;
+
+    // Also set the attributes for good measure
+    featured.width = game.width;
+    featured.height = game.height;
+
+    console.log('Container resized to:', {
+        containerWidth: container.clientWidth,
+        containerHeight: container.clientHeight,
+        iframeWidth: featured.clientWidth,
+        iframeHeight: featured.clientHeight,
+        containerVisible: container.offsetParent !== null
+    });
+
+
     featured.src = game.path;
     document.querySelector('.game-info .game-title').textContent = game.title;
     document.querySelector('.game-description').textContent = game.description;
-    
 }
 
 function initializeGames() {
@@ -61,32 +81,7 @@ function randomizeGame() {
     do {
         newGame = gameEntries[Math.floor(Math.random() * gameEntries.length)][1];
     } while (newGame.path === currentPath);
-    
-    const container = document.querySelector('.featured-game-container');
-    
-    // Set container size
-    container.style.width = `${newGame.width}px`;
-    container.style.height = `${newGame.height}px`;
-    
-    // Set iframe size
-    currentGame.style.width = `${newGame.width}px`;
-    currentGame.style.height = `${newGame.height}px`;
-    // Also set the attributes for good measure
-    currentGame.width = newGame.width;
-    currentGame.height = newGame.height;
-    
-    // Set source and text content last
-    currentGame.src = newGame.path;
-    document.querySelector('.game-info .game-title').textContent = newGame.title;
-    document.querySelector('.game-description').textContent = newGame.description;
-    
-    console.log('Container resized to:', {
-        containerWidth: container.clientWidth,
-        containerHeight: container.clientHeight,
-        iframeWidth: currentGame.clientWidth,
-        iframeHeight: currentGame.clientHeight,
-        containerVisible: container.offsetParent !== null
-    });
+    loadGame(newGame);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
