@@ -39,30 +39,20 @@
                 <h1>Installation</h1>
             </header>
             <h2>PufferTank (Recommended)</h2>
-            <p><a href="https://github.com/pufferai/puffertank" target="_blank">PufferTank</a> is a prebuilt GPU Docker image with PufferLib and dependencies for all environments in the registry, including some that are slow and tricky to install.</p>
+            <p><a href="https://github.com/pufferai/puffertank" target="_blank">PufferTank</a> is a prebuilt GPU Docker image with PufferLib and dependencies for all environments in the registry, including some that are slow and tricky to install. If you have not used containers before and just want everything to work, clone the repository and open it in VSCode. You will need to install the Dev Container plugin as well as Docker Desktop. VSCode will then detect the settings in .devcontainer and set up the container for you. Neovim (btw) is also included.</p>
             <pre><code>git clone https://github.com/pufferai/puffertank
 cd puffertank
-
-# Get a shell. Will download the ~12GB image on first run.
-bash docker.sh test</code></pre>
-            <div class="info-box">
-                <p>If you have not used containers before and just want everything to work, clone the repository and open it in VSCode. You will need to install the Dev Container plugin as well as Docker Desktop. VSCode will then detect the settings in .devcontainer and set up the container for you. Neovim (btw) is also included.</p>
-            </div>
+bash docker.sh test # Run image. Downloads ~12GB on the first run.</code></pre>
 
             <h2>Pip Installation (core only, no training demo)</h2>
-            <p>PufferLib is available as a standard pip package:</p>
             <pre><code>pip install pufferlib
-
-# Extras for tutorial
-pip install pufferlib[cleanrl,atari]</code></pre>
+pip install pufferlib[cleanrl,atari] # Extras for this tutorial</code></pre>
 
             <h2>Source Installation</h2>
             <pre><code>git clone https://github.com/pufferai/pufferlib
 cd pufferlib
 pip install -e .
-
-# Extras for tutorial
-pip install -e .[cleanrl,atari]</code></pre>
+pip install -e .[cleanrl,atari] # Extras for this tutorial</code></pre>
         </article>
 
         <article id="post-2" class="blog-post">
@@ -133,45 +123,48 @@ vecenv = pufferlib.vector.make(
 vecenv = pufferlib.vector.make(env_creator, num_envs=4)
 
 # Make 4 copies of Breakout, each on a separate process
-puf_vec = pufferlib.vector.make(env_creator, num_envs=4,
+vecenv = pufferlib.vector.make(env_creator, num_envs=4,
     backend=pufferlib.vector.Multiprocessing)
 
 # Make 4 copies of Breakout, 2 on each of 2 processes
-puf_vec = pufferlib.vector.make(env_creator, num_envs=4,
+vecenv = pufferlib.vector.make(env_creator, num_envs=4,
     backend=pufferlib.vector.Multiprocessing, num_workers=2)
 
 # Make 4 copies of Breakout, 2 on each of 2 processes,
 # but only get two observations per step
-puf_vec = pufferlib.vector.make(env_creator, num_envs=4,
+vecenv = pufferlib.vector.make(env_creator, num_envs=4,
     backend=pufferlib.vector.Multiprocessing, num_workers=2,
     batch_size=2)
 
 # Make 1024 instances of Ocean breakout on the current process
-from pufferlib.environments.ocean import breakout
-puf_vec = pufferlib.vector.make(breakout.env_creator,
+from pufferlib.ocean import Breakout
+vecenv = pufferlib.vector.make(Breakout,
     backend=pufferlib.vector.Native,
-    env_kwargs=[{'num_agents': 1024}],
+    env_kwargs={'num_envs': 1024},
 )
 
 # Notice that Native envs handle multiple instances internally.
 # You can still multiprocess/async, but don't make multiple external
 # copies per process.
-vecenv = pufferlib.vector.make(env_creator, num_envs=2,
+vecenv = pufferlib.vector.make(Breakout, num_envs=2,
     backend=pufferlib.vector.Multiprocessing, batch_size=1)
 
 # Synchronous API - reset/step
-vecenv = pufferlib.vector.make(breakout.env_creator, num_envs=2,
+import time
+vecenv = pufferlib.vector.make(Breakout, num_envs=2,
     backend=pufferlib.vector.Multiprocessing)
+vecenv.reset()
 start, steps, TIMEOUT = time.time(), 0, 3
 while time.time() - start < TIMEOUT:
-    puf_vec.step(puf_vec.action_space.sample())
+    vecenv.step(vecenv.action_space.sample())
     steps += 1
 
 vecenv.close()
 print('Puffer FPS:', steps*vecenv.num_envs/TIMEOUT)
 
 # Async API - async_reset, send/recv
-vecenv = pufferlib.vector.make(breakout.env_creator, num_envs=2,
+# Call your model between recv() and send()
+vecenv = pufferlib.vector.make(Breakout, num_envs=2,
     backend=pufferlib.vector.Multiprocessing, batch_size=1)
 vecenv.async_reset()
 start, steps, TIMEOUT = time.time(), 0, 3
@@ -200,6 +193,7 @@ print('Puffer Async FPS:', steps*vecenv.num_envs/TIMEOUT)
         </header>
         <p>Complex environments may have heirarchical observations and actions, variable numbers of agents, and other quirks that make them difficult to work with and incompatible with standard reinforcement learning libraries. PufferLib's emulation layer makes every environment look like it has flat observations/actions and a constant number of agents. Here's how it works with NetHack and Neural MMO, two notoriously complex environments.</p>
 
+        <pre><code>pip install -e .[nethack,nmmo]</code></pre>
         <pre><code>import pufferlib.emulation
 import pufferlib.wrappers
 
@@ -211,81 +205,152 @@ def nmmo_creator():
     return pufferlib.emulation.PettingZooPufferEnv(env=env)
 
 def nethack_creator():
-    return pufferlib.emulation.GymnasiumPufferEnv(env_creator=nle.env.NLE)
+    env = nle.env.NLE()
+    import shimmy # Gym versioning
+    env = shimmy.GymV21CompatibilityV0(env=env)
+    return pufferlib.emulation.GymnasiumPufferEnv(env=env)
 
 env = nethack_creator()
 obs, _ = env.reset()
-print('Emulate observation shape:', obs.shape)
-
-# Unflatten to original shape
 structured_obs = obs.view(env.obs_dtype)
-print('Original observation shape:', structured_obs.shape)
-</code></pre>
+print('NetHack observation space:', structured_obs.dtype)
+print('Packed shape:', obs.shape)
+
+env = nmmo_creator()
+obs, _ = env.reset()
+structured_obs = obs[1].view(env.obs_dtype)
+print('NMMO observation space:', structured_obs.dtype)
+print('Packed shape:', obs[1].shape)</code></pre>
         <p>The wrappers give you back a Gymnasium/PettingZoo compliant environment. There is no loss of generality and no change to the underlying environment. You can wrap environments by class, creator function, or object, with or without additional arguments. These wrappers enable us to make some optimizations to vectorization code that would be difficult to implement otherwise.</p>
     </article>
     <article id="post-5" class="blog-post">
         <header class="post-header">
             <h1>Policies</h1>
         </header>
-        <p>You don't want another Policy API so we don't have one. Just write normal PyTorch code. We do provide a wrapper for CleanRL compatibility.</p>
-<pre><code>
-import torch
+        <p>You don't want another Policy API so we don't have one. We Just write normal PyTorch code. We do provide:</p>
+        <ul>
+            <li><strong>Default policies:</strong> A small collection of broadly useful networks. These include MLPs and CNNs.</li>
+            <li><strong>LSTM Integration:</strong> Break your <code>forward()</code> function into <code>encode_observations()</code> and <code>decode_actions()</code> and our LSTM wrapper will handle recurrance for you</li>
+            <li><strong>CleanRL API compatibility:</strong> Wrappers that format your policy for usage with CleanRL. We use these in our demos. This is mostly fluff -- we're working on cutting down boilerplate.</li>
+        </ul>
+
+<pre><code>import torch
 from torch import nn
 import numpy as np
 
-import pufferlib.frameworks.cleanrl
 
-class Policy(nn.Module):
-  def __init__(self, env):
-      super().__init__()
-      self.encoder = nn.Linear(np.prod(
-          envs.single_observation_space.shape), 128)
-      self.decoders = nn.ModuleList([nn.Linear(128, n)
-          for n in envs.single_action_space.nvec])
-      self.value_head = nn.Linear(128, 1)
+class Default(nn.Module):
+    '''Default PyTorch policy. Flattens obs and applies a linear layer.
 
-  def forward(self, env_outputs):
-      env_outputs = env_outputs.reshape(env_outputs.shape[0], -1)
-      hidden = self.encoder(env_outputs)
-      actions = [dec(hidden) for dec in self.decoders]
-      value = self.value_head(hidden)
-      return actions, value
+    PufferLib is not a framework. It does not enforce a base class.
+    You can use any PyTorch policy that returns actions and values.
+    We structure our forward methods as encode_observations and decode_actions
+    to make it easier to wrap policies with LSTMs. You can do that and use
+    our LSTM wrapper or implement your own. To port an existing policy
+    for use with our LSTM wrapper, simply put everything from forward() before
+    the recurrent cell into encode_observations and put everything after
+    into decode_actions.
+    '''
+    def __init__(self, env, hidden_size=128):
+        super().__init__()
+        self.hidden_size = hidden_size
+        self.is_multidiscrete = isinstance(env.single_action_space,
+                pufferlib.spaces.MultiDiscrete)
+        self.is_continuous = isinstance(env.single_action_space,
+                pufferlib.spaces.Box)
+        try:
+            self.is_dict_obs = isinstance(env.env.observation_space, pufferlib.spaces.Dict) 
+        except:
+            self.is_dict_obs = isinstance(env.observation_space, pufferlib.spaces.Dict) 
 
-obs = torch.Tensor(obs)
-policy = Policy(envs.driver_env)
-cleanrl_policy = pufferlib.frameworks.cleanrl.Policy(policy)
-actions = cleanrl_policy.get_action_and_value(obs)[0].numpy()
-obs, rewards, terminals, truncateds, infos = envs.step(actions)
-envs.close()</code></pre>
+        if self.is_dict_obs:
+            self.dtype = pufferlib.pytorch.nativize_dtype(env.emulated)
+            input_size = sum(np.prod(v.shape) for v in env.env.observation_space.values())
+            self.encoder = nn.Linear(input_size, self.hidden_size)
+        else:
+            self.encoder = nn.Linear(np.prod(env.single_observation_space.shape), hidden_size)
 
-        <p>Optionally, you can class break the forward pass into an encode and decode step, which allows us to handle recurrance for you. So far, the code above is fully general and does not rely on PufferLib support for specific environments. For convenience, we also provide environment hooks with standard wrappers and baseline models. Here's a complete example.</p>
-<pre><code>
-import torch
+        if self.is_multidiscrete:
+            action_nvec = env.single_action_space.nvec
+            self.decoder = nn.ModuleList([pufferlib.pytorch.layer_init(
+                nn.Linear(hidden_size, n), std=0.01) for n in action_nvec])
+        elif not self.is_continuous:
+            self.decoder = pufferlib.pytorch.layer_init(
+                nn.Linear(hidden_size, env.single_action_space.n), std=0.01)
+        else:
+            self.decoder_mean = pufferlib.pytorch.layer_init(
+                nn.Linear(hidden_size, env.single_action_space.shape[0]), std=0.01)
+            self.decoder_logstd = nn.Parameter(torch.zeros(
+                1, env.single_action_space.shape[0]))
 
-import pufferlib.models
+        self.value_head = nn.Linear(hidden_size, 1)
+
+    def forward(self, observations):
+        hidden, lookup = self.encode_observations(observations)
+        actions, value = self.decode_actions(hidden, lookup)
+        return actions, value
+
+    def encode_observations(self, observations):
+        '''Encodes a batch of observations into hidden states. Assumes
+        no time dimension (handled by LSTM wrappers).'''
+        batch_size = observations.shape[0]
+        if self.is_dict_obs:
+            observations = pufferlib.pytorch.nativize_tensor(observations, self.dtype)
+            observations = torch.cat([v.view(batch_size, -1) for v in observations.values()], dim=1)
+        else: 
+            observations = observations.view(batch_size, -1)
+        return torch.relu(self.encoder(observations.float())), None
+
+    def decode_actions(self, hidden, lookup, concat=True):
+        '''Decodes a batch of hidden states into (multi)discrete actions.
+        Assumes no time dimension (handled by LSTM wrappers).'''
+        value = self.value_head(hidden)
+        if self.is_multidiscrete:
+            actions = [dec(hidden) for dec in self.decoder]
+            return actions, value
+        elif self.is_continuous:
+            mean = self.decoder_mean(hidden)
+            logstd = self.decoder_logstd.expand_as(mean)
+            std = torch.exp(logstd)
+            probs = torch.distributions.Normal(mean, std)
+            batch = hidden.shape[0]
+            return probs, value
+
+        actions = self.decoder(hidden)
+        return actions, value
+
 import pufferlib.vector
+from pufferlib.ocean import Breakout
+vecenv = pufferlib.vector.make(Breakout, backend=pufferlib.vector.Native)
+policy = Default(vecenv.driver_env)
+obs, _ = vecenv.reset()
+obs = torch.as_tensor(obs)
+
+# Use the PyTorch policy raw
+actions, value = policy(obs)
+
+# Use our LSTM compatibility layer
+from pufferlib.models import LSTMWrapper
+lstm_policy = LSTMWrapper(vecenv.driver_env, policy)
+state = (
+    torch.zeros(1, 1, lstm_policy.hidden_size),
+    torch.zeros(1, 1, lstm_policy.hidden_size),
+)
+actions, value, state = lstm_policy(obs, state)
+
+# Use our CleanRL API compatibility layer
 import pufferlib.frameworks.cleanrl
-import pufferlib.environments.nmmo
-
-make_env = pufferlib.environments.nmmo.env_creator()
-envs = pufferlib.vector.make(make_env, backend=backend, num_envs=4)
-
-policy = pufferlib.environments.nmmo.Policy(envs.driver_env)
 cleanrl_policy = pufferlib.frameworks.cleanrl.Policy(policy)
-
-env_outputs = envs.reset()[0]
-obs = torch.from_numpy(env_outputs)
 actions = cleanrl_policy.get_action_and_value(obs)[0].numpy()
-next_obs, rewards, terminals, truncateds, infos = envs.step(actions)
-envs.close()</code></pre>
 
-        <p>It's that simple -- almost. Remember the unflatten operation in Emulation? We provide a PyTorch version of that which you'll want to use in any environment with structured observations.</p>
+# Use our CleanRL LSTM API compatibility layer
+cleanrl_lstm_policy = pufferlib.frameworks.cleanrl.RecurrentPolicy(lstm_policy)
+actions = cleanrl_lstm_policy.get_action_and_value(obs)[0].numpy()
 
-        <pre><code>
-dtype = pufferlib.pytorch.nativize_dtype(envs.driver_env.emulated)
-env_outputs = pufferlib.pytorch.nativize_tensor(obs, dtype)
-print('Packed tensor:', obs.shape)
-print('Unpacked:', env_outputs.keys())</code></pre>
+obs, rewards, terminals, truncateds, infos = vecenv.step(actions)
+vecenv.close()<code></pre>
+
+        <p>Remember the unflatten operation in Emulation? Notice our usage of <code>pufferlib.pytorch.nativize_dtype</code> and <code>pufferlib.pytorch.nativize_tensor</code> to unpack structured data in the forward pass. You only need to worry about this if your environment has structured observation data.</p>
 
     </article>
     <article id="post-6" class="blog-post">
@@ -301,14 +366,13 @@ print('Unpacked:', env_outputs.keys())</code></pre>
         <p>PufferLib ships with <a href="ocean.html">Ocean</a>, our first-party suite of high-performance environments. They are written with our native PufferEnv API, which eliminates traditional bottlenecks. For debugging new code, Ocean also includes specially designed sanity environments that train in seconds and will let you catch 90% of implementation bugs.</p>
 
         <p>PufferEnv is a vector format that easily scales to several million steps per second. It is very similar to Gymnasium's VectorEnv, but with some elements preserved from PettingZoo to better support multi-agent envs without inconveniencing single-agent use. The Python binding is included below. The full source is available in ocean/squared.</p>
-        <pre><code>
-'''A simple sample environment. Use this as a template for your own envs.'''
+        <pre><code>'''A simple sample environment. Use this as a template for your own envs.'''
 
 import gymnasium
 import numpy as np
 
 import pufferlib
-from pufferlib.environments.ocean.squared.cy_squared import CySquared
+from pufferlib.ocean.squared.cy_squared import CySquared
 
 
 class Squared(pufferlib.PufferEnv):
@@ -346,8 +410,7 @@ class Squared(pufferlib.PufferEnv):
         self.c_envs.render()
 
     def close(self):
-        self.c_envs.close()
-</code></pre>
+        self.c_envs.close()</code></pre>
             <p>The key feature here is the allocation of data buffers for observations, rewards, etc. When multiprocessing, PufferLib will place these into a single shared memory tensor, so your data will be available on the main process immediately. In other words, your environment computes observations directly into shared memory with no redundant copies or slow Python glue. The base class is less than 100 lines. We suggest reading it just to see that there is no magic.</p>
 
             <p>The logic for this environment is imported. It is written in C with an intermediate binding in Cython. This is not part of the API. You can implement environment logic in Python or any other language you like. The only hard requirement is that you write data into the provided self.observations, self.actions, self.rewards, self.terminals, and self.truncations buffers. Additionally, there are two soft requirements that we plan to revisit. First, PufferEnvs must handle multiple environment copies internally. This one is easy to eliminate, but you probably don't want Python running this loop anyways. Second, your environment must handle resets internally. This one is just easier for now, and we will revisit if it becomes an issue.</p>
