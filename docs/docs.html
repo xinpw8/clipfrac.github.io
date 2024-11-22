@@ -339,12 +339,12 @@ state = (
 actions, value, state = lstm_policy(obs, state)
 
 # Use our CleanRL API compatibility layer
-import pufferlib.frameworks.cleanrl
-cleanrl_policy = pufferlib.frameworks.cleanrl.Policy(policy)
+import pufferlib.cleanrl
+cleanrl_policy = pufferlib.cleanrl.Policy(policy)
 actions = cleanrl_policy.get_action_and_value(obs)[0].numpy()
 
 # Use our CleanRL LSTM API compatibility layer
-cleanrl_lstm_policy = pufferlib.frameworks.cleanrl.RecurrentPolicy(lstm_policy)
+cleanrl_lstm_policy = pufferlib.cleanrl.RecurrentPolicy(lstm_policy)
 actions = cleanrl_lstm_policy.get_action_and_value(obs)[0].numpy()
 
 obs, rewards, terminals, truncateds, infos = vecenv.step(actions)
