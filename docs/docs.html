@@ -348,7 +348,7 @@ cleanrl_lstm_policy = pufferlib.cleanrl.RecurrentPolicy(lstm_policy)
 actions = cleanrl_lstm_policy.get_action_and_value(obs)[0].numpy()
 
 obs, rewards, terminals, truncateds, infos = vecenv.step(actions)
-vecenv.close()<code></pre>
+vecenv.close()</code></pre>
 
         <p>Remember the unflatten operation in Emulation? Notice our usage of <code>pufferlib.pytorch.nativize_dtype</code> and <code>pufferlib.pytorch.nativize_tensor</code> to unpack structured data in the forward pass. You only need to worry about this if your environment has structured observation data.</p>
 
