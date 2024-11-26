@@ -1,7 +1,7 @@
 const games = {
     moba: {
         title: "Puffer MOBA",
-        description: "A Multiplayer Online Battle Arena (MOBA) inspired by games like DoTA and League of Legends. Click to move, Q/W/E for skills. Number keys to switch characters. By Joseph Suarez.",
+        description: "A Multiplayer Online Battle Arena (MOBA) inspired by games like DoTA and League of Legends. Click to move, Q/W/E for skills. Number keys to switch characters. By Joseph.",
         thumbnail: "assets/moba_thumbnail.png",
         path: "assets/moba/game.html",
         width: 1312,
@@ -9,7 +9,7 @@ const games = {
     },
     tactics: {
         title: "Puffer Tactics",
-        description: "A turn-based tactical combat game. Inspired by games like Fire Emblem and the popular MMO Dofus. By Nathan.",
+        description: "A turn-based tactical combat game. Inspired by games like Fire Emblem and the popular MMO Dofus. By Nathan. Click to move, number keys to select skills.",
         thumbnail: "assets/tactical_thumbnail.png",
         path: "assets/tactical/game.html",
         width: 1200,
@@ -17,7 +17,7 @@ const games = {
     },
     go: {
         title: "Go",
-        description: "The ancient board game of territory control and strategic placement.",
+        description: "The ancient board game of territory control and strategic placement. By Spencer. Click to place a stone.",
         thumbnail: "assets/go_thumbnail.png",
         path: "assets/go/game.html",
         width: 950,
@@ -25,7 +25,7 @@ const games = {
     },
     snake: {
         title: "Multiagent Snake",
-        description: "A multiplayer version of the classic snake game with competitive elements.",
+        description: "A multiplayer version of classic snake. By Joseph. W/A/S/D to move.",
         thumbnail: "assets/snake_thumbnail.png",
         path: "assets/snake/game.html",
         width: 1280,
@@ -33,7 +33,7 @@ const games = {
     },
     tripletriad: {
 	    title: "Triple Triad",
-	    description: "A card game inspired by Final Fantasy",
+	    description: "A card game inspired by Final Fantasy. By Spencer. Num keys to select cards, click to place.",
 	    thumbnail: "assets/tripletriad_thumbnail.png",
 	    path: "assets/tripletriad/game.html",
 	    width: 990,
@@ -41,7 +41,7 @@ const games = {
     },
     pong: {
         title: "Pong",
-        description: "A classic reimagined: Play against our reinforcement learned agent or watch AI vs AI matches.",
+        description: "A fast version of the classic Atari game. By Nathan. W/S to move.",
         thumbnail: "assets/pong_thumbnail.png",
         path: "assets/pong/game.html",
         width: 620,
@@ -49,7 +49,7 @@ const games = {
     },
     breakout: {
         title: "Breakout",
-        description: "The arcade classic featuring ball physics and block breaking gameplay.",
+        description: "A fast version of the classic Atari game. By Noah, physics enhanced by David. A/D to move, W to fire.",
         thumbnail: "assets/breakout_thumbnail.png",
         path: "assets/breakout/game.html",
         width: 576,
@@ -57,7 +57,7 @@ const games = {
     },
     connect4: {
         title: "Connect4",
-        description: "The classic two-player connection game with perfect play AI.",
+        description: "The classic two-player board game. By Spencer, AI enhanced by Jake. Num keys to play in col.",
         thumbnail: "assets/connect4_thumbnail.png",
         path: "assets/connect4/game.html",
         width: 672,
@@ -65,7 +65,7 @@ const games = {
     },
     rware: {
         title: "RWare",
-        description: "Port of the robot warehouse environment RWare to C",
+        description: "Port of the robot warehouse environment RWare to C. By Spencer. W to move, A/D to turn, Enter to load a box.",
         thumbnail: "assets/rware_thumbnail.png",
         path: "assets/rware/game.html",
         width: 1280,
@@ -76,7 +76,7 @@ const games = {
 const wip = {
     tcg: {
         title: "TCG",
-        description: "A trading card game environment for testing strategic deck building and card play.",
+        description: "Prototype of a trading card game inspired by MTG. By Joseph. Num keys to select a card/target, Enter to confirm.",
         thumbnail: "assets/tcg_thumbnail.png",
         path: "assets/tcg/game.html",
         width: 1080,
@@ -84,7 +84,7 @@ const wip = {
     },
     robocode: {
         title: "Robocode",
-        description: "A port of the Java programming challenge Robocode to C",
+        description: "A port of the Java programming challenge Robocode to C. By Joseph. W/S to move, A/D to turn, Space to fire.",
         thumbnail: "assets/robocode_thumbnail.png",
         path: "assets/robocode/game.html",
         width: 768,
