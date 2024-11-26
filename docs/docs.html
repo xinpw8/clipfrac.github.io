@@ -80,7 +80,6 @@ python demo.py --help --env puffer_snake
 python demo.py --mode train --env breakout --vec multiprocessing
 
 # Run a hyperparameter sweep on Ocean pong. Requires carbs (github pufferai/carbs):
-# TODO: Clean up CARBS defaults
 python demo.py --mode sweep-carbs --env puffer_pong
 
 # Train Ocean snake with wandb logs:
@@ -93,10 +92,13 @@ python demo.py --env puffer_snake --mode train --train.learning-rate 0.001 --env
 python demo.py --env puffer_snake --mode eval --baseline
 
 # Eval an uninitialized policy:
-python demo.py --env puffer_snake --mode eval --baseline
+python demo.py --env puffer_snake --mode eval
 
 # Eval a local checkpoint:
-python demo.py --env puffer_snake --mode eval --eval-model-path your_model.pt</code></pre>
+python demo.py --env puffer_snake --mode eval --eval-model-path your_model.pt
+
+# Useful for finding your latest checkpoint:
+ls -lt experiments | head</code></pre>
            <p>Compared to the original CleanRL code, our demo file (which loads clean_pufferl.py) supports asynchronous on-policy vectorization, better multi-agent training, a convenient cli dashboard, better WandB log and sweeps integration, and more. It's only around 1000 lines of code, most of which is logging.</p>
        </article>
        <article id="post-3" class="blog-post">
