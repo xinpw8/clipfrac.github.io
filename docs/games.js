@@ -68,8 +68,8 @@ const games = {
         description: "Port of the robot warehouse environment RWare to C. By Spencer. W to move, A/D to turn, Enter to load a box.",
         thumbnail: "assets/rware_thumbnail.png",
         path: "assets/rware/game.html",
-        width: 1280,
-        height: 640,
+        width: 640,
+        height: 704,
     },
 };
 
