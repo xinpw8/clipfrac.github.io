@@ -60,8 +60,8 @@ const games = {
         description: "A fast version of the classic Atari game. By Bet. A/D to steer, space to accelerate.",
         thumbnail: "assets/enduro_thumbnail.png",
         path: "assets/enduro/game.html",
-        width: 160,
-        height: 210,
+        width: 304,
+        height: 420,
     },
     connect4: {
         title: "Connect4",

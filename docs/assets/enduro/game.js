@@ -35,7 +35,7 @@ if (ENVIRONMENT_IS_NODE) {
 
 // --pre-jses are emitted after the Module integration code, so that they can
 // refer to Module (if they choose; they can also define Module)
-// include: /tmp/tmpcuzsmnfb.js
+// include: /tmp/tmpee71tox6.js
 
   Module['expectedDataFileDownloads'] ??= 0;
   Module['expectedDataFileDownloads']++;
@@ -215,25 +215,25 @@ Module['FS_createPath']("/resources", "robocode", true, true);
     }
 
     }
-    loadPackage({"files": [{"filename": "/resources/breakout_weights.bin", "start": 0, "end": 592404}, {"filename": "/resources/connect4.pt", "start": 592404, "end": 622798}, {"filename": "/resources/connect4_weights.bin", "start": 622798, "end": 1177326}, {"filename": "/resources/moba/bloom_shader_100.fs", "start": 1177326, "end": 1178395}, {"filename": "/resources/moba/bloom_shader_330.fs", "start": 1178395, "end": 1179466}, {"filename": "/resources/moba/dota_map.png", "start": 1179466, "end": 1183162}, {"filename": "/resources/moba/game_map.npy", "start": 1183162, "end": 1199546}, {"filename": "/resources/moba/map_shader_100.fs", "start": 1199546, "end": 1203126}, {"filename": "/resources/moba/map_shader_330.fs", "start": 1203126, "end": 1209703}, {"filename": "/resources/moba/moba_assets.png", "start": 1209703, "end": 1322952}, {"filename": "/resources/moba/moba_weights.bin", "start": 1322952, "end": 2843176}, {"filename": "/resources/pong_weights.bin", "start": 2843176, "end": 3378232}, {"filename": "/resources/puffer_enduro/0_bg.png", "start": 3378232, "end": 3379040}, {"filename": "/resources/puffer_enduro/0_mtns.png", "start": 3379040, "end": 3379256}, {"filename": "/resources/puffer_enduro/10_bg.png", "start": 3379256, "end": 3380067}, {"filename": "/resources/puffer_enduro/10_mtns.png", "start": 3380067, "end": 3380292}, {"filename": "/resources/puffer_enduro/11_bg.png", "start": 3380292, "end": 3381100}, {"filename": "/resources/puffer_enduro/11_mtns.png", "start": 3381100, "end": 3381316}, {"filename": "/resources/puffer_enduro/12_bg.png", "start": 3381316, "end": 3382083}, {"filename": "/resources/puffer_enduro/12_mtns.png", "start": 3382083, "end": 3382297}, {"filename": "/resources/puffer_enduro/13_bg.png", "start": 3382297, "end": 3383061}, {"filename": "/resources/puffer_enduro/13_mtns.png", "start": 3383061, "end": 3383205}, {"filename": "/resources/puffer_enduro/14_bg.png", "start": 3383205, "end": 3383972}, {"filename": "/resources/puffer_enduro/14_mtns.png", "start": 3383972, "end": 3384186}, {"filename": "/resources/puffer_enduro/15_bg.png", "start": 3384186, "end": 3384954}, {"filename": "/resources/puffer_enduro/15_mtns.png", "start": 3384954, "end": 3385168}, {"filename": "/resources/puffer_enduro/1_bg.png", "start": 3385168, "end": 3385943}, {"filename": "/resources/puffer_enduro/1_mtns.png", "start": 3385943, "end": 3386164}, {"filename": "/resources/puffer_enduro/2_bg.png", "start": 3386164, "end": 3386939}, {"filename": "/resources/puffer_enduro/2_mtns.png", "start": 3386939, "end": 3387156}, {"filename": "/resources/puffer_enduro/3_bg.png", "start": 3387156, "end": 3387932}, {"filename": "/resources/puffer_enduro/3_mtns.png", "start": 3387932, "end": 3388154}, {"filename": "/resources/puffer_enduro/4_bg.png", "start": 3388154, "end": 3388928}, {"filename": "/resources/puffer_enduro/4_mtns.png", "start": 3388928, "end": 3389137}, {"filename": "/resources/puffer_enduro/5_bg.png", "start": 3389137, "end": 3389933}, {"filename": "/resources/puffer_enduro/5_mtns.png", "start": 3389933, "end": 3390152}, {"filename": "/resources/puffer_enduro/6_bg.png", "start": 3390152, "end": 3390959}, {"filename": "/resources/puffer_enduro/6_mtns.png", "start": 3390959, "end": 3391175}, {"filename": "/resources/puffer_enduro/7_bg.png", "start": 3391175, "end": 3391979}, {"filename": "/resources/puffer_enduro/7_mtns.png", "start": 3391979, "end": 3392199}, {"filename": "/resources/puffer_enduro/8_bg.png", "start": 3392199, "end": 3393099}, {"filename": "/resources/puffer_enduro/8_mtns.png", "start": 3393099, "end": 3393319}, {"filename": "/resources/puffer_enduro/9_bg.png", "start": 3393319, "end": 3394125}, {"filename": "/resources/puffer_enduro/9_mtns.png", "start": 3394125, "end": 3394347}, {"filename": "/resources/puffer_enduro/digits_0.png", "start": 3394347, "end": 3394492}, {"filename": "/resources/puffer_enduro/digits_1.png", "start": 3394492, "end": 3394643}, {"filename": "/resources/puffer_enduro/digits_2.png", "start": 3394643, "end": 3394804}, {"filename": "/resources/puffer_enduro/digits_3.png", "start": 3394804, "end": 3394966}, {"filename": "/resources/puffer_enduro/digits_4.png", "start": 3394966, "end": 3395128}, {"filename": "/resources/puffer_enduro/digits_5.png", "start": 3395128, "end": 3395282}, {"filename": "/resources/puffer_enduro/digits_6.png", "start": 3395282, "end": 3395442}, {"filename": "/resources/puffer_enduro/digits_7.png", "start": 3395442, "end": 3395597}, {"filename": "/resources/puffer_enduro/digits_8.png", "start": 3395597, "end": 3395746}, {"filename": "/resources/puffer_enduro/digits_9.png", "start": 3395746, "end": 3395904}, {"filename": "/resources/puffer_enduro/digits_car.png", "start": 3395904, "end": 3396068}, {"filename": "/resources/puffer_enduro/enduro_weights.bin", "start": 3396068, "end": 3956748}, {"filename": "/resources/puffer_enduro/enemy_car_blue_left_tread.png", "start": 3956748, "end": 3961880}, {"filename": "/resources/puffer_enduro/enemy_car_blue_right_tread.png", "start": 3961880, "end": 3967012}, {"filename": "/resources/puffer_enduro/enemy_car_gold_left_tread.png", "start": 3967012, "end": 3972145}, {"filename": "/resources/puffer_enduro/enemy_car_gold_right_tread.png", "start": 3972145, "end": 3977276}, {"filename": "/resources/puffer_enduro/enemy_car_night_fog_tail_lights.png", "start": 3977276, "end": 3982117}, {"filename": "/resources/puffer_enduro/enemy_car_night_tail_lights.png", "start": 3982117, "end": 3982251}, {"filename": "/resources/puffer_enduro/enemy_car_pink_left_tread.png", "start": 3982251, "end": 3987383}, {"filename": "/resources/puffer_enduro/enemy_car_pink_right_tread.png", "start": 3987383, "end": 3992515}, {"filename": "/resources/puffer_enduro/enemy_car_salmon_left_tread.png", "start": 3992515, "end": 3997647}, {"filename": "/resources/puffer_enduro/enemy_car_salmon_right_tread.png", "start": 3997647, "end": 4002778}, {"filename": "/resources/puffer_enduro/enemy_car_teal_left_tread.png", "start": 4002778, "end": 4007909}, {"filename": "/resources/puffer_enduro/enemy_car_teal_right_tread.png", "start": 4007909, "end": 4013039}, {"filename": "/resources/puffer_enduro/enemy_car_yellow_left_tread.png", "start": 4013039, "end": 4018170}, {"filename": "/resources/puffer_enduro/enemy_car_yellow_right_tread.png", "start": 4018170, "end": 4023300}, {"filename": "/resources/puffer_enduro/green_digits_0.png", "start": 4023300, "end": 4023443}, {"filename": "/resources/puffer_enduro/green_digits_1.png", "start": 4023443, "end": 4023605}, {"filename": "/resources/puffer_enduro/green_digits_2.png", "start": 4023605, "end": 4023796}, {"filename": "/resources/puffer_enduro/green_digits_3.png", "start": 4023796, "end": 4023975}, {"filename": "/resources/puffer_enduro/green_digits_4.png", "start": 4023975, "end": 4024157}, {"filename": "/resources/puffer_enduro/green_digits_5.png", "start": 4024157, "end": 4024331}, {"filename": "/resources/puffer_enduro/green_digits_6.png", "start": 4024331, "end": 4024512}, {"filename": "/resources/puffer_enduro/green_digits_7.png", "start": 4024512, "end": 4024687}, {"filename": "/resources/puffer_enduro/green_digits_8.png", "start": 4024687, "end": 4024847}, {"filename": "/resources/puffer_enduro/green_digits_9.png", "start": 4024847, "end": 4025027}, {"filename": "/resources/puffer_enduro/level_complete_flag_left.png", "start": 4025027, "end": 4025220}, {"filename": "/resources/puffer_enduro/level_complete_flag_right.png", "start": 4025220, "end": 4025414}, {"filename": "/resources/puffer_enduro/player_car_left_tread.png", "start": 4025414, "end": 4030305}, {"filename": "/resources/puffer_enduro/player_car_right_tread.png", "start": 4030305, "end": 4035197}, {"filename": "/resources/puffer_enduro/yellow_digits_0.png", "start": 4035197, "end": 4035357}, {"filename": "/resources/puffer_enduro/yellow_digits_1.png", "start": 4035357, "end": 4035520}, {"filename": "/resources/puffer_enduro/yellow_digits_2.png", "start": 4035520, "end": 4035697}, {"filename": "/resources/puffer_enduro/yellow_digits_3.png", "start": 4035697, "end": 4035874}, {"filename": "/resources/puffer_enduro/yellow_digits_4.png", "start": 4035874, "end": 4036052}, {"filename": "/resources/puffer_enduro/yellow_digits_5.png", "start": 4036052, "end": 4036218}, {"filename": "/resources/puffer_enduro/yellow_digits_6.png", "start": 4036218, "end": 4036398}, {"filename": "/resources/puffer_enduro/yellow_digits_7.png", "start": 4036398, "end": 4036574}, {"filename": "/resources/puffer_enduro/yellow_digits_8.png", "start": 4036574, "end": 4036732}, {"filename": "/resources/puffer_enduro/yellow_digits_9.png", "start": 4036732, "end": 4036904}, {"filename": "/resources/puffers_128.png", "start": 4036904, "end": 4059810}, {"filename": "/resources/robocode/robocode.png", "start": 4059810, "end": 4091048}, {"filename": "/resources/rware_weights.bin", "start": 4091048, "end": 4636864}, {"filename": "/resources/snake_weights.bin", "start": 4636864, "end": 5230292}, {"filename": "/resources/tripletriad_weights.bin", "start": 5230292, "end": 5825812}], "remote_package_size": 5825812});
+    loadPackage({"files": [{"filename": "/resources/breakout_weights.bin", "start": 0, "end": 592404}, {"filename": "/resources/connect4.pt", "start": 592404, "end": 622798}, {"filename": "/resources/connect4_weights.bin", "start": 622798, "end": 1177326}, {"filename": "/resources/moba/bloom_shader_100.fs", "start": 1177326, "end": 1178395}, {"filename": "/resources/moba/bloom_shader_330.fs", "start": 1178395, "end": 1179466}, {"filename": "/resources/moba/dota_map.png", "start": 1179466, "end": 1183162}, {"filename": "/resources/moba/game_map.npy", "start": 1183162, "end": 1199546}, {"filename": "/resources/moba/map_shader_100.fs", "start": 1199546, "end": 1203126}, {"filename": "/resources/moba/map_shader_330.fs", "start": 1203126, "end": 1209703}, {"filename": "/resources/moba/moba_assets.png", "start": 1209703, "end": 1322952}, {"filename": "/resources/moba/moba_weights.bin", "start": 1322952, "end": 2843176}, {"filename": "/resources/pong_weights.bin", "start": 2843176, "end": 3378232}, {"filename": "/resources/puffer_enduro/enduro_spritesheet.png", "start": 3378232, "end": 3385717}, {"filename": "/resources/puffer_enduro/enduro_weights.bin", "start": 3385717, "end": 3954589}, {"filename": "/resources/puffers_128.png", "start": 3954589, "end": 3977495}, {"filename": "/resources/robocode/robocode.png", "start": 3977495, "end": 4008733}, {"filename": "/resources/rware_weights.bin", "start": 4008733, "end": 4554549}, {"filename": "/resources/snake_weights.bin", "start": 4554549, "end": 5147977}, {"filename": "/resources/tripletriad_weights.bin", "start": 5147977, "end": 5743497}], "remote_package_size": 5743497});
 
   })();
 
-// end include: /tmp/tmpcuzsmnfb.js
-// include: /tmp/tmp14391rkd.js
+// end include: /tmp/tmpee71tox6.js
+// include: /tmp/tmpqbobi82r.js
 
     // All the pre-js content up to here must remain later on, we need to run
     // it.
     if (Module['$ww'] || (typeof ENVIRONMENT_IS_PTHREAD != 'undefined' && ENVIRONMENT_IS_PTHREAD)) Module['preRun'] = [];
     var necessaryPreJSTasks = Module['preRun'].slice();
-  // end include: /tmp/tmp14391rkd.js
-// include: /tmp/tmpgimc_bqp.js
+  // end include: /tmp/tmpqbobi82r.js
+// include: /tmp/tmpl919qpq7.js
 
     if (!Module['preRun']) throw 'Module.preRun should exist because file support used it; did a pre-js delete it?';
     necessaryPreJSTasks.forEach((task) => {
       if (Module['preRun'].indexOf(task) < 0) throw 'All preRun tasks that exist before user pre-js code should remain after; did you replace Module or modify Module.preRun?';
     });
-  // end include: /tmp/tmpgimc_bqp.js
+  // end include: /tmp/tmpl919qpq7.js
 
 
 // Sometimes an existing Module object exists with properties
@@ -8788,6 +8788,17 @@ function GetWindowInnerHeight() { return window.innerHeight; }
 
 
 
+
+
+
+
+
+
+
+
+
+
+
   
   
   
@@ -11268,6 +11279,10 @@ var wasmImports = {
   /** @export */
   glBindBuffer: _glBindBuffer,
   /** @export */
+  glBindFramebuffer: _glBindFramebuffer,
+  /** @export */
+  glBindRenderbuffer: _glBindRenderbuffer,
+  /** @export */
   glBindTexture: _glBindTexture,
   /** @export */
   glBlendEquation: _glBlendEquation,
@@ -11281,6 +11296,8 @@ var wasmImports = {
   glBufferData: _glBufferData,
   /** @export */
   glBufferSubData: _glBufferSubData,
+  /** @export */
+  glCheckFramebufferStatus: _glCheckFramebufferStatus,
   /** @export */
   glClear: _glClear,
   /** @export */
@@ -11300,7 +11317,11 @@ var wasmImports = {
   /** @export */
   glDeleteBuffers: _glDeleteBuffers,
   /** @export */
+  glDeleteFramebuffers: _glDeleteFramebuffers,
+  /** @export */
   glDeleteProgram: _glDeleteProgram,
+  /** @export */
+  glDeleteRenderbuffers: _glDeleteRenderbuffers,
   /** @export */
   glDeleteShader: _glDeleteShader,
   /** @export */
@@ -11322,15 +11343,25 @@ var wasmImports = {
   /** @export */
   glEnableVertexAttribArray: _glEnableVertexAttribArray,
   /** @export */
+  glFramebufferRenderbuffer: _glFramebufferRenderbuffer,
+  /** @export */
+  glFramebufferTexture2D: _glFramebufferTexture2D,
+  /** @export */
   glFrontFace: _glFrontFace,
   /** @export */
   glGenBuffers: _glGenBuffers,
+  /** @export */
+  glGenFramebuffers: _glGenFramebuffers,
+  /** @export */
+  glGenRenderbuffers: _glGenRenderbuffers,
   /** @export */
   glGenTextures: _glGenTextures,
   /** @export */
   glGetAttribLocation: _glGetAttribLocation,
   /** @export */
   glGetFloatv: _glGetFloatv,
+  /** @export */
+  glGetFramebufferAttachmentParameteriv: _glGetFramebufferAttachmentParameteriv,
   /** @export */
   glGetProgramInfoLog: _glGetProgramInfoLog,
   /** @export */
@@ -11349,6 +11380,8 @@ var wasmImports = {
   glPixelStorei: _glPixelStorei,
   /** @export */
   glReadPixels: _glReadPixels,
+  /** @export */
+  glRenderbufferStorage: _glRenderbufferStorage,
   /** @export */
   glScissor: _glScissor,
   /** @export */
