@@ -21,7 +21,7 @@ const games = {
         thumbnail: "assets/go_thumbnail.png",
         path: "assets/go/game.html",
         width: 950,
-        height: 640,
+        height: 512,
     },
     snake: {
         title: "Multiagent Snake",
