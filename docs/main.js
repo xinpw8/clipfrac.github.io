@@ -45,6 +45,7 @@ function loadGame(game) {
 
     featured.src = game.path;
     document.querySelector('.game-info .game-title').textContent = game.title;
+    document.querySelector('.game-description').style.whiteSpace = 'pre-wrap';
     document.querySelector('.game-description').textContent = game.description;
 }
 
