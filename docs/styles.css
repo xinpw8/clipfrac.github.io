@@ -3,7 +3,7 @@
     --foreground: #061a1a;
     --background: #000000;
     --text: #f1f1f1;
-    --content-max-width: 1200px;
+    --content-max-width: 1280px;
     --content-padding: 40px;
     --header-height: 180px;
 }
@@ -11,10 +11,18 @@
 body {
     margin: 0;
     padding: 0;
-    font-family: system-ui, -apple-system, sans-serif;
-    background: var(--foreground);  /* this was added */
+    font-family: Helvetica, Arial, sans-serif;
+    background: var(--foreground);
     color: var(--text);
     min-height: 100vh;
+}
+
+p, li {
+  line-height: 1.6;
+}
+
+code, pre {
+    font-family: Consolas, monospace;
 }
 
 pre {
@@ -85,6 +93,17 @@ a:hover {
     width: 100%;
     margin-bottom: 1rem;
     border-radius: 5px;
+}
+
+.featured-game-container:hover {
+    outline: 4px solid #f1f1f1; /* Highlight color, does not affect layout */
+    box-shadow: 0 0 15px #f1f1f1; /* Adds a glowing effect */
+    transition: outline 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+}
+
+.featured-game-container:active{
+    outline: 4px solid #00ffff; /* Highlight color, does not affect layout */
+    box-shadow: 0 0 15px #00ffff; /* Adds a glowing effect */
 }
 
 .game-info {

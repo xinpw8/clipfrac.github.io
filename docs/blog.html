@@ -4,29 +4,51 @@
     <meta charset="UTF-8">
     <title>PufferLib Blog</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="blog.css">
 </head>
 <body>
 
     <main class="content">
         <nav class="nav-box">
             <ul>
-                <li><a href="#post-2">Reinforcement Learning Quickstart Guide</a></li>
+                <li><a href="#post-8">Reinforcement Learning at 1M sps</a></li>
+                <li><a href="#post-7">Reinforcement Learning Quickstart Guide</a></li>
 
-                <li><a href="#post-2">The Puffer Stack</a></li>
-                <li><a href="#post-3">PufferLib 0.7: Puffing Up Performance with Shared Memory</a></li>
+                <li><a href="#post-6">The Puffer Stack</a></li>
+                <li><a href="#post-5">PufferLib 0.7: Puffing Up Performance with Shared Memory</a></li>
                 <li><a href="#post-4">PufferLib 0.6: 🐡🌊 An Ocean of Environments for Learning Pufferfish</a></li>
-                <li><a href="#post-5">PufferLib 0.5: A Bigger EnvPool for Growing Puffers</a></li>
-                <li><a href="#post-6">PufferLib 0.4: Ready to Take on Bigger Fish</a></li>
-                <li><a href="#post-7">PufferLib 0.2: Ready to Take on the Big Fish</a></li>
+                <li><a href="#post-3">PufferLib 0.5: A Bigger EnvPool for Growing Puffers</a></li>
+                <li><a href="#post-2">PufferLib 0.4: Ready to Take on Bigger Fish</a></li>
+                <li><a href="#post-1">PufferLib 0.2: Ready to Take on the Big Fish</a></li>
             </ul>
         </nav>
-            <article id="post-1" class="blog-post">
+            <article id="post-8" class="blog-post">
+                <header class="post-header">
+                    <h1>Reinforcement Learning at 1,000,000 Steps/second</h1>
+                </header>
+                <p>Welcome to a new age of reinforcement learning. This is our biggest release ever. 11 new environments totaling ~20,000 lines of pure C. They all run >1M steps/second (sps) on a single CPU core, and you can train at 300k-1.2M sps on a single GPU, depending on the environment and policy. That means you can run centuries of simulations per GPU per day. Academic labs with a handful of GPUs now effectively have thousands. It's all free and open source under the MIT license -- star the repo to support the project!</p>
+                <div style="text-align: center;">
+                    <img src="assets/puffer_2.gif" alt="PufferLib 2.0 Trailer" max-width="100%">
+                </div>
+
+                <p>About half of the new environment code was written by open-source contributors. Thank you all for making this possible. A full list is available on the project page.</p>
+                <h2>Puffer Ocean: Our Environments</h2>
+                <p>You can play these yourself or watch our pretrained agents running live in your browser. Each of our new environments are written in C as a single .h file. There is nothing fancy here, and the only dependency is raylib for rendering. Anyone who has taken a single systems course can understand and contribute to the code. The main techniques we use for performance are:</p>
+                <ul>
+                    <li>No dynamic memory allocations. Everything is allocated during initialization.</li>
+                    <li>No observation copies. Environments write observations directly to the buffers used for training.</li>
+                    <li>Aggressive caching. The most extreme example of this is in the MOBA, where we store 250MB of pathing data.</li>
+                </ul>
+                <p>We bind environments to Python via a short Cython intermediary layer. Each environment also has a Python stub defining observation and action spaces and wrapping the Cython step/reset/close functions. This means that environment devs more comfortable in Python can prototype there before porting to Cython or C for performance. Cython is plenty fast, but C makes it easy to compile for web. We load PyTorch models with a ~500 line puffernet.h to demo trained agents in your browser.</p>
+                <h2>Native PufferEnv API + Vectorization</h2>
+                <p>Even with a 1M sps environment, you still spend 15 minutes on simulation per billion steps trained. With PufferLib, it's more like 10 seconds because of asynchronous on-policy sampling. When your policy is computing actions for one batch of environments, another is stepping in the background. By the time your forward pass is done, new data is ready with 0 downtime. This is a fancy implementation of EnvPool with some extra tricks. It's compatible with everything, not just our native envs, but that's where you'll see the biggest benefit. Details are in the PufferLib whitepaper on arXiv.</p>
+                <p>To achieve this level of performance, we introduce a new PufferEnv API for native environments. It's less than 100 lines and allows new environments to take full advantage of the rest of PufferLib's optimizations. Native environments skip the Python loop over agents as well as several redundant copy operations. Our multiprocessing implementation checks if you are using a native environment and, if you are, it passes your constructor a pointer into shared memory. Each C environment then writes observations directly into that buffer, so they are immediately available on the main process.</p>
+                <p>In case you're worried about compatibility, don't be. Everything can still be run with Gymnasium/PettingZoo. We just use a VecEnv style API by default. Async mode is a superset of Gymnasium, so you can start off synchronous and implement async with a few small changes to your training code. And even if you don't do any of that, you will still be able to train an order of magnitude faster than with more standard environments.</p>
+            </article>
+            <article id="post-7" class="blog-post">
                 <header class="post-header">
                     <h1>Reinforcement Learning Quickstart Guide</h1>
                 </header>
                 <p>So you want to learn reinforcement learning? It's a hard mountain to climb, but I'm going to be giving you some of the best tricks and insights from my playbook. Star PufferLib on GitHub if you learn something useful. It's the library I'm building to make RL fast and sane.</p>
-
                 <h2>What is RL?</h2>
                 <p>(Deep) reinforcement learning is a branch of ML focused on learning through interaction. You are training an agent or policy. Both of these just mean neural network. The world, game, or sim the agent is interacting with is called the environment, which is in a particular state at any point in time. The agent makes an observation of the state at each timestep. That's the data it sees and can use to make decisions. In some environments, this is simply the full state, in which case we say the environment is fully observed. Otherwise, it is partially observed. In math heavy RL lit, you will see these described by Markov Decision Processes (MDP) and Partially Observable MDPs (POMDP). Consider this nomenclature optional. The agent makes an action based on the observation, which is then used to step the environment forward in time. The environment will return a reward based on what happens in the environment. This can be 0 and often is, but it might be 0.5 if an agent scores a point and -1 is the agent dies, for example.</p>
 
@@ -62,7 +84,7 @@
             </article>
 
 
-            <article id="post-1" class="blog-post">
+            <article id="post-6" class="blog-post">
                 <header class="post-header">
                     <h1>The Puffer Stack</h1>
                 </header>
@@ -99,7 +121,7 @@
 
                 <p>One of the worst things you can do is to adopt heavy tools and then use them wrong. No shared file system, Slurm, etc. means less stuff to manage and less stuff in onboarding. We can get new users onto a machine with their own dev environment that exactly matches their local one in 5 minutes.</p>
 
-            <article id="post-2" class="blog-post">
+            <article id="post-5" class="blog-post">
                 <header class="post-header">
                     <h1>PufferLib 0.7: Puffing Up Performance with Shared Memory</h1>
                 </header>
@@ -147,7 +169,7 @@ truncated_arr[:] = truncated.ravel()</code></pre>
 
                 <p>Thanks to Aleksei Petrenko, the creator of Sample Factory, for useful discussions and pointers to optimizations in the Sample Factory code base. Aleksei also has a useful pip package, faster-fifo, that fixes the horrible performance of Python’s native multiprocessing.Queue. It’s much simpler than raw Pipes and nearly as fast.</p>
 
-             <article id="post-3" class="blog-post">
+             <article id="post-4" class="blog-post">
                 <header class="post-header">
                     <h1>PufferLib 0.6: 🐡🌊 An Ocean of Environments for Learning Pufferfish</h1>
                 </header>
@@ -184,7 +206,7 @@ truncated_arr[:] = truncated.ravel()</code></pre>
                 <p>Let me know if you have other ideas for useful test environments. Lately, I’ve landed on either very simple or very complex environments as being the most useful for research. Many of the tasks in the middle (looking at you Atari) are too slow to be useful as quick tests and too simple to test interesting ideas.</p>
 
 
-             <article id="post-4" class="blog-post">
+             <article id="post-3" class="blog-post">
                 <header class="post-header">
                     <h1>PufferLib 0.5: A Bigger EnvPool for Growing Puffers</h1>
                 </header>
@@ -259,7 +281,7 @@ truncated_arr[:] = truncated.ravel()</code></pre>
 
                 <p>There’s one other thing I want to mention for people looking at the code. I was doing some experimental procedural stuff testing different programming paradigms, so the actual class interfaces are in __init__. It’s pretty much equivalent to one subclass per backend.</p>
 
-            <article id="post-5" class="blog-post">
+            <article id="post-2" class="blog-post">
                 <header class="post-header">
                     <h1>PufferLib 0.4: Ready to Take on Bigger Fish</h1>
                 </header>
@@ -334,7 +356,7 @@ obs, _, _, _ = envs.recv()</code></pre>
 
                 <p>Join us on Discord and tell us your pain points. We might just fix them.</p>
             </article>
-            <article id="post-6" class="blog-post">
+            <article id="post-1" class="blog-post">
                 <header class="post-header">
                     <h1>PufferLib 0.2: Ready to Take on the Big Fish</h1>
                 </header>
