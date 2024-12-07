@@ -35,7 +35,7 @@ if (ENVIRONMENT_IS_NODE) {
 
 // --pre-jses are emitted after the Module integration code, so that they can
 // refer to Module (if they choose; they can also define Module)
-// include: /tmp/tmp4wi2o7di.js
+// include: /tmp/tmp1pevm92u.js
 
   Module['expectedDataFileDownloads'] ??= 0;
   Module['expectedDataFileDownloads']++;
@@ -147,6 +147,9 @@ var REMOTE_PACKAGE_SIZE = metadata['remote_package_size'];
       }
 Module['FS_createPath']("/", "resources", true, true);
 Module['FS_createPath']("/resources", "moba", true, true);
+Module['FS_createPath']("/resources", "nmmo3", true, true);
+Module['FS_createPath']("/resources", "puffer_enduro", true, true);
+Module['FS_createPath']("/resources", "robocode", true, true);
 
       /** @constructor */
       function DataRequest(start, end, audio) {
@@ -213,25 +216,25 @@ Module['FS_createPath']("/resources", "moba", true, true);
     }
 
     }
-    loadPackage({"files": [{"filename": "/resources/breakout_weights.bin", "start": 0, "end": 592404}, {"filename": "/resources/connect4.pt", "start": 592404, "end": 622798}, {"filename": "/resources/connect4_weights.bin", "start": 622798, "end": 1177326}, {"filename": "/resources/moba/bloom_shader_100.fs", "start": 1177326, "end": 1178395}, {"filename": "/resources/moba/bloom_shader_330.fs", "start": 1178395, "end": 1179466}, {"filename": "/resources/moba/dota_map.png", "start": 1179466, "end": 1183162}, {"filename": "/resources/moba/game_map.npy", "start": 1183162, "end": 1199546}, {"filename": "/resources/moba/map_shader_100.fs", "start": 1199546, "end": 1203126}, {"filename": "/resources/moba/map_shader_330.fs", "start": 1203126, "end": 1209703}, {"filename": "/resources/moba/moba_assets.png", "start": 1209703, "end": 1322952}, {"filename": "/resources/moba/moba_weights.bin", "start": 1322952, "end": 2843176}, {"filename": "/resources/pong_weights.bin", "start": 2843176, "end": 3378232}, {"filename": "/resources/puffers_128.png", "start": 3378232, "end": 3401138}, {"filename": "/resources/snake_weights.bin", "start": 3401138, "end": 3994566}], "remote_package_size": 3994566});
+    loadPackage({"files": [{"filename": "/resources/breakout_weights.bin", "start": 0, "end": 592404}, {"filename": "/resources/connect4.pt", "start": 592404, "end": 622798}, {"filename": "/resources/connect4_weights.bin", "start": 622798, "end": 1177326}, {"filename": "/resources/go_weights.bin", "start": 1177326, "end": 2196794}, {"filename": "/resources/moba/bloom_shader_100.fs", "start": 2196794, "end": 2197863}, {"filename": "/resources/moba/bloom_shader_330.fs", "start": 2197863, "end": 2198934}, {"filename": "/resources/moba/dota_map.png", "start": 2198934, "end": 2202630}, {"filename": "/resources/moba/game_map.npy", "start": 2202630, "end": 2219014}, {"filename": "/resources/moba/map_shader_100.fs", "start": 2219014, "end": 2222594}, {"filename": "/resources/moba/map_shader_330.fs", "start": 2222594, "end": 2229171}, {"filename": "/resources/moba/moba_assets.png", "start": 2229171, "end": 2342420}, {"filename": "/resources/moba/moba_weights.bin", "start": 2342420, "end": 3862644}, {"filename": "/resources/nmmo3/ASSETS_LICENSE.md", "start": 3862644, "end": 3863002}, {"filename": "/resources/nmmo3/air_0.png", "start": 3863002, "end": 4132896}, {"filename": "/resources/nmmo3/air_1.png", "start": 4132896, "end": 4403674}, {"filename": "/resources/nmmo3/air_2.png", "start": 4403674, "end": 4672771}, {"filename": "/resources/nmmo3/air_3.png", "start": 4672771, "end": 4944940}, {"filename": "/resources/nmmo3/air_4.png", "start": 4944940, "end": 5210611}, {"filename": "/resources/nmmo3/air_5.png", "start": 5210611, "end": 5476514}, {"filename": "/resources/nmmo3/air_6.png", "start": 5476514, "end": 5740760}, {"filename": "/resources/nmmo3/air_7.png", "start": 5740760, "end": 6005152}, {"filename": "/resources/nmmo3/air_8.png", "start": 6005152, "end": 6271292}, {"filename": "/resources/nmmo3/air_9.png", "start": 6271292, "end": 6536993}, {"filename": "/resources/nmmo3/earth_0.png", "start": 6536993, "end": 6805380}, {"filename": "/resources/nmmo3/earth_1.png", "start": 6805380, "end": 7074795}, {"filename": "/resources/nmmo3/earth_2.png", "start": 7074795, "end": 7342373}, {"filename": "/resources/nmmo3/earth_3.png", "start": 7342373, "end": 7612623}, {"filename": "/resources/nmmo3/earth_4.png", "start": 7612623, "end": 7877695}, {"filename": "/resources/nmmo3/earth_5.png", "start": 7877695, "end": 8143061}, {"filename": "/resources/nmmo3/earth_6.png", "start": 8143061, "end": 8406722}, {"filename": "/resources/nmmo3/earth_7.png", "start": 8406722, "end": 8670493}, {"filename": "/resources/nmmo3/earth_8.png", "start": 8670493, "end": 8935826}, {"filename": "/resources/nmmo3/earth_9.png", "start": 8935826, "end": 9201063}, {"filename": "/resources/nmmo3/fire_0.png", "start": 9201063, "end": 9468932}, {"filename": "/resources/nmmo3/fire_1.png", "start": 9468932, "end": 9738537}, {"filename": "/resources/nmmo3/fire_2.png", "start": 9738537, "end": 10006359}, {"filename": "/resources/nmmo3/fire_3.png", "start": 10006359, "end": 10277525}, {"filename": "/resources/nmmo3/fire_4.png", "start": 10277525, "end": 10542026}, {"filename": "/resources/nmmo3/fire_5.png", "start": 10542026, "end": 10806947}, {"filename": "/resources/nmmo3/fire_6.png", "start": 10806947, "end": 11069895}, {"filename": "/resources/nmmo3/fire_7.png", "start": 11069895, "end": 11333173}, {"filename": "/resources/nmmo3/fire_8.png", "start": 11333173, "end": 11598165}, {"filename": "/resources/nmmo3/fire_9.png", "start": 11598165, "end": 11862881}, {"filename": "/resources/nmmo3/inventory_64.png", "start": 11862881, "end": 11863332}, {"filename": "/resources/nmmo3/inventory_64_press.png", "start": 11863332, "end": 11863785}, {"filename": "/resources/nmmo3/inventory_64_selected.png", "start": 11863785, "end": 11864244}, {"filename": "/resources/nmmo3/items_condensed.png", "start": 11864244, "end": 11884118}, {"filename": "/resources/nmmo3/map_shader_100.fs", "start": 11884118, "end": 11885693}, {"filename": "/resources/nmmo3/map_shader_330.fs", "start": 11885693, "end": 11887371}, {"filename": "/resources/nmmo3/merged_sheet.png", "start": 11887371, "end": 18166704}, {"filename": "/resources/nmmo3/neutral_0.png", "start": 18166704, "end": 18433924}, {"filename": "/resources/nmmo3/neutral_1.png", "start": 18433924, "end": 18701896}, {"filename": "/resources/nmmo3/neutral_2.png", "start": 18701896, "end": 18968151}, {"filename": "/resources/nmmo3/neutral_3.png", "start": 18968151, "end": 19237736}, {"filename": "/resources/nmmo3/neutral_4.png", "start": 19237736, "end": 19501267}, {"filename": "/resources/nmmo3/neutral_5.png", "start": 19501267, "end": 19764999}, {"filename": "/resources/nmmo3/neutral_6.png", "start": 19764999, "end": 20027539}, {"filename": "/resources/nmmo3/neutral_7.png", "start": 20027539, "end": 20290071}, {"filename": "/resources/nmmo3/neutral_8.png", "start": 20290071, "end": 20554487}, {"filename": "/resources/nmmo3/neutral_9.png", "start": 20554487, "end": 20818132}, {"filename": "/resources/nmmo3/nmmo3_help.png", "start": 20818132, "end": 20882792}, {"filename": "/resources/nmmo3/nmmo_1500.bin", "start": 20882792, "end": 25288404}, {"filename": "/resources/nmmo3/nmmo_2025.bin", "start": 25288404, "end": 29694016}, {"filename": "/resources/nmmo3/water_0.png", "start": 29694016, "end": 29963677}, {"filename": "/resources/nmmo3/water_1.png", "start": 29963677, "end": 30234124}, {"filename": "/resources/nmmo3/water_2.png", "start": 30234124, "end": 30502654}, {"filename": "/resources/nmmo3/water_3.png", "start": 30502654, "end": 30774349}, {"filename": "/resources/nmmo3/water_4.png", "start": 30774349, "end": 31039726}, {"filename": "/resources/nmmo3/water_5.png", "start": 31039726, "end": 31305198}, {"filename": "/resources/nmmo3/water_6.png", "start": 31305198, "end": 31569003}, {"filename": "/resources/nmmo3/water_7.png", "start": 31569003, "end": 31833008}, {"filename": "/resources/nmmo3/water_8.png", "start": 31833008, "end": 32098476}, {"filename": "/resources/nmmo3/water_9.png", "start": 32098476, "end": 32363610}, {"filename": "/resources/pong_weights.bin", "start": 32363610, "end": 32898666}, {"filename": "/resources/puffer_enduro/enduro_spritesheet.png", "start": 32898666, "end": 32906151}, {"filename": "/resources/puffer_enduro/enduro_weights.bin", "start": 32906151, "end": 33475023}, {"filename": "/resources/puffers_128.png", "start": 33475023, "end": 33497929}, {"filename": "/resources/robocode/robocode.png", "start": 33497929, "end": 33529167}, {"filename": "/resources/rware_weights.bin", "start": 33529167, "end": 34074983}, {"filename": "/resources/snake_weights.bin", "start": 34074983, "end": 34668411}, {"filename": "/resources/tripletriad_weights.bin", "start": 34668411, "end": 35263931}], "remote_package_size": 35263931});
 
   })();
 
-// end include: /tmp/tmp4wi2o7di.js
-// include: /tmp/tmpcnkaw7x8.js
+// end include: /tmp/tmp1pevm92u.js
+// include: /tmp/tmpndwipar8.js
 
     // All the pre-js content up to here must remain later on, we need to run
     // it.
     if (Module['$ww'] || (typeof ENVIRONMENT_IS_PTHREAD != 'undefined' && ENVIRONMENT_IS_PTHREAD)) Module['preRun'] = [];
     var necessaryPreJSTasks = Module['preRun'].slice();
-  // end include: /tmp/tmpcnkaw7x8.js
-// include: /tmp/tmpp9q_awow.js
+  // end include: /tmp/tmpndwipar8.js
+// include: /tmp/tmpdq207y45.js
 
     if (!Module['preRun']) throw 'Module.preRun should exist because file support used it; did a pre-js delete it?';
     necessaryPreJSTasks.forEach((task) => {
       if (Module['preRun'].indexOf(task) < 0) throw 'All preRun tasks that exist before user pre-js code should remain after; did you replace Module or modify Module.preRun?';
     });
-  // end include: /tmp/tmpp9q_awow.js
+  // end include: /tmp/tmpdq207y45.js
 
 
 // Sometimes an existing Module object exists with properties
@@ -11515,8 +11518,6 @@ var missingLibrarySymbols = [
   'dynCallLegacy',
   'getDynCaller',
   'dynCall',
-  'setWasmTableEntry',
-  'getWasmTableEntry',
   'asmjsMangle',
   'HandleAllocator',
   'getNativeTypeSize',
