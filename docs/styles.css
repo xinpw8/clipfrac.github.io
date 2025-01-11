@@ -31,6 +31,21 @@ html {
     background: var(--foreground);
 }
 
+/* Ensure proper stacking context */
+body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+    touch-action: manipulation;
+    background: var(--foreground);
+    color: var(--text);
+    font-family: Roboto, sans-serif;
+    position: relative;
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -46,12 +61,13 @@ body {
 
 /* Force content to stay in viewport */
 .content, .product-content {
-    width: 100vw;
+    width: 100%;
     min-height: 100vh;
     overflow-x: hidden;
-    position: fixed;
-    top: 0;
-    left: 0;
+    padding-left: calc(10% + 68px); /* Account for nav-box width */
+    position: relative;
+    margin-left: 0;
+    box-sizing: border-box;
 }
 
 p, li {
@@ -209,7 +225,9 @@ a:hover {
     transform: translateX(-100%);
     width: 100%;
     max-width: 68px;
-    z-index: 100;
+    z-index: 10;
+    height: 100vh;
+    overflow-y: auto;
 }
 
 .nav-box ul {
@@ -269,8 +287,11 @@ pre code {
     font-family: Roboto, sans-serif;
 }
 
+/* Update main content positioning */
 .main-content {
-    padding-top: calc(var(--header-height) + 20px); /* Consistent padding for all pages */
+    padding-top: var(--header-height);
     position: relative;
-    z-index: 1;
+    width: 100%;
+    min-height: 100vh;
+    box-sizing: border-box;
 }
