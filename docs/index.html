@@ -1,84 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <style>
+        html { background: #181310; }
+        body { opacity: 1 !important; }
+    </style>
+    <title>Clipfrac</title>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="styles.css">
-    <style>
-        :root {
-            --spacing: 2rem;
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: system-ui, -apple-system, sans-serif;
-            color: var(--text);
-            line-height: 1.5;
-        }
-
-        .main-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: var(--spacing);
-        }
-
-        /* Basic content styles */
-        .title-content {
-            margin-bottom: var(--spacing);
-        }
-
-        .section-header {
-            margin: calc(var(--spacing) * 2) 0 var(--spacing);
-            font-size: 1.75rem;
-            color: var(--text);
-        }
-
-        /* Citation section */
-        .citation pre {
-            margin: 0;
-            padding: var(--spacing);
-            background: var(--bg-secondary);
-            border-radius: 8px;
-            white-space: pre-wrap;       /* Wrap text */
-            word-wrap: break-word;       /* Break long words */
-            font-size: 0.9rem;
-            line-height: 1.4;
-        }
-
-        .citation code {
-            background: none;
-            padding: 0;
-            max-width: 100%;
-            display: block;
-        }
-
-        /* Contributors section */
-        .contributor {
-            margin-bottom: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .contributor strong {
-            color: var(--highlight);
-            font-size: 1.1rem;
-        }
-
-        .contributor span {
-            padding-left: var(--spacing);
-            color: var(--text);
-            display: block;
-        }
-
-    </style>
+    <meta name="theme-color" content="#181310">
+    <meta name="color-scheme" content="dark">
 </head>
 <body>
-    <main class="main-content">
+    <nav class="nav-box">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="product.html">Product</a></li>
+            <li><a href="ocean.html">Ocean</a></li>
+            <li><a href="docs.html">Docs</a></li>
+            <li><a href="blog.html">Blog</a></li>
+        </ul>
+    </nav>
+    <main class="content">
         <div class="title-content">
             <p>Website layout by Joseph Suarez.</p>
             <p>Practicing web design.</p>
-      </div>
+        </div>
 
         <div class="demo-showcase">
             <div class="featured-game-container">
@@ -107,11 +54,16 @@
                 <strong>BET</strong>
                 <span>Okay.</span>
             </div>
-         </div>
+        </div>
     </main>
-
-    <script src="header.js"></script>
     <script src="games.js"></script>
     <script src="main.js"></script>
+    <noscript>
+        <style>
+            .main-content {
+                visibility: visible;
+            }
+        </style>
+    </noscript>
 </body>
 </html>

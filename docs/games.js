@@ -18,4 +18,3 @@ Actions: Discrete. Move, accelerate, brake`,
         height: 420,
     },
 }
-

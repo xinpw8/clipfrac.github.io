@@ -4,89 +4,23 @@
     <meta charset="UTF-8">
     <title>Hello. This Is A Title.</title>
     <link rel="stylesheet" href="styles.css">
-    <style>
-        :root {
-            --border-radius: 8px;
-            --spacing-lg: 4rem;
-            --spacing-md: 2rem;
-            --spacing-sm: 1rem;
-            --thumbnail-height: 150px;  /* Fixed thumbnail height */
-        }
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: system-ui, -apple-system, sans-serif;
-            color: var(--text);
-            background: var(--foreground);
-        }
-        .main-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: var(--spacing-md);
-        }
-        .section-header {
-            margin: var(--spacing-lg) 0 var(--spacing-sm);
-            font-size: 2rem;
-            color: var(--text);
-        }
-        .section-description {
-            margin-bottom: var(--spacing-md);
-            line-height: 1.6;
-            max-width: 800px;
-        }
-
-        .games-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: var(--spacing-md);
-            margin: var(--spacing-md) 0;
-            justify-content: center;
-        }
-
-        .wip-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: var(--spacing-md);
-            margin: var(--spacing-md) 0;
-            justify-content: center;
-        }
-
-        .game-card {
-            cursor: pointer;
-            transition: transform 0.2s;
-            text-align: center;
-            background: black;
-            border-radius: var(--border-radius);
-            border: 2px var(--highlight) solid;
-            overflow: hidden;
-        }
-
-        .game-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .game-thumbnail {
-            height: var(--thumbnail-height);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .game-thumbnail img {
-            height: 100%;
-            width: auto;
-        }
-
-        .game-card .game-title {
-            padding: var(--spacing-sm);
-            margin: 0;
-            font-size: 1.1rem;
-            color: var(--highlight);
-        }
-    </style>
 </head>
 <body>
-    <main class="main-content">
+    <nav class="nav-box">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="product.html">Product</a></li>
+            <li><a href="ocean.html">Ocean</a></li>
+            <li><a href="docs.html">Docs</a></li>
+            <li><a href="blog.html">Blog</a></li>
+        </ul>
+    </nav>
+    <main class="content">
+        <div class="title-content">
+            <p>Website layout by Joseph Suarez.</p>
+            <p>Practicing web design.</p>
+        </div>
+
         <div class="demo-showcase">
             <div class="featured-game-container">
                 <iframe src="assets/enduro/game.html" class="featured-game" title="Featured Game - Enduro"></iframe>
@@ -110,14 +44,8 @@
         <div class="games-grid">
             <!-- Games populated by JavaScript -->
         </div>
-        <h2 class="section-header">WIP</h2>
-        <div class="wip-grid">
-            <!-- WIP populated by JavaScript -->
-        </div>
-        <h2 class="section-header">Sanity</h2>
         <p>A cool thing goes here.</p>
     </main>
-    <script src="header.js"></script>
     <script src="games.js"></script>
     <script src="main.js"></script>
 </body>

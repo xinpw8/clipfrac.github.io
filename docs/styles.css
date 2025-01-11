@@ -1,28 +1,67 @@
+* {
+    -ms-content-zooming: none;
+    -ms-touch-action: pan-x pan-y;
+    touch-action: pan-x pan-y;
+    zoom: 1.0 !important;
+}
+
+html {
+    zoom: 1.0 !important;
+    -ms-text-size-adjust: none !important;
+    -webkit-text-size-adjust: none !important;
+    text-size-adjust: none !important;
+}
+
 :root {
-    --highlight: #00bbbb;
-    --foreground: #061a1a;
-    --background: #000000;
-    --text: #f1f1f1;
+    --highlight: #0da108;
+    --foreground: #181310;
+    --background: #1a0202;
+    --text: #b39465;
+    --button-background: #140c0c;
     --content-max-width: 1280px;
-    --content-padding: 40px;
-    --header-height: 180px;
+    --content-padding: 100px;
+    --header-height: 10px;
+    color-scheme: dark; /* Helps some browsers pre-apply dark mode */
+}
+
+html {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: var(--foreground);
 }
 
 body {
     margin: 0;
     padding: 0;
-    font-family: Helvetica, Arial, sans-serif;
+    width: 100vw;
+    height: 100vh;
+    overflow: auto;
+    -webkit-text-size-adjust: none;
+    touch-action: manipulation;
     background: var(--foreground);
     color: var(--text);
+    font-family: Roboto, sans-serif;
+}
+
+/* Force content to stay in viewport */
+.content, .product-content {
+    width: 100vw;
     min-height: 100vh;
+    overflow-x: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
 }
 
 p, li {
-  line-height: 1.6;
+    line-height: 1.6;
+    color: var(--text); /* Ensure paragraph and list item text color is set to var(--text) */
+    font-family: Roboto, sans-serif;
 }
 
 code, pre {
-    font-family: Consolas, monospace;
+    font-family: Roboto, sans-serif;
 }
 
 pre {
@@ -31,10 +70,13 @@ pre {
     border-radius: 8px;
     overflow-x: auto;
     margin: 1.5rem 0;
+    border: 1px solid var(--highlight);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    font-family: Roboto, sans-serif;
 }
 
 code {
-    font-family: monospace;
+    font-family: Roboto, sans-serif;
     color: var(--highlight);
     font-size: 0.9rem;
 }
@@ -42,6 +84,7 @@ code {
 .highlight-link {
     color: var(--highlight);
     text-decoration: none;
+    font-family: Roboto, sans-serif;
 }
 
 .highlight-link:hover {
@@ -52,22 +95,27 @@ h1 {
     color: var(--highlight);
     font-size: 2.5rem;
     margin-bottom: 1rem;
+    font-family: Roboto, sans-serif;
 }
 
 h2 {
     color: var(--text);
     font-size: 1.8rem;
     margin: 2rem 0 1rem 0;
+    font-family: Roboto, sans-serif;
 }
 
 p {
     line-height: 1.6;
     margin-bottom: 1rem;
+    color: var(--text); /* Ensure paragraph text color is set to var(--text) */
+    font-family: Roboto, sans-serif;
 }
 
 a {
     color: var(--highlight);
     text-decoration: none;
+    font-family: Roboto, sans-serif;
 }
 
 a:hover {
@@ -77,6 +125,9 @@ a:hover {
 /* Game showcase styles*/
 .demo-showcase {
     margin-bottom: 4rem;
+    font-family: Roboto, sans-serif;
+    min-height: 100vh;
+    padding-top: 40px; /* Add space for nav on game pages */
 }
 
 .featured-game {
@@ -85,60 +136,80 @@ a:hover {
     height: 1080px;
     margin: 0 auto;
     border: none;
+    font-family: Roboto, sans-serif;
 }
 
 .featured-game-container {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    margin-bottom: 1rem;
-    border-radius: 5px;
+    display: inline-block;
+    width: auto;
+    height: auto;
+    margin: 0 auto;
+    padding: 0;
+    background: none;
+    font-family: Roboto, sans-serif;
 }
 
 .featured-game-container:hover {
     outline: 4px solid #f1f1f1; /* Highlight color, does not affect layout */
     box-shadow: 0 0 15px #f1f1f1; /* Adds a glowing effect */
     transition: outline 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+    font-family: Roboto, sans-serif;
 }
 
 .featured-game-container:active{
     outline: 4px solid #00ffff; /* Highlight color, does not affect layout */
     box-shadow: 0 0 15px #00ffff; /* Adds a glowing effect */
+    font-family: Roboto, sans-serif;
 }
 
 .game-info {
     margin-bottom: var(--spacing);
+    font-family: Roboto, sans-serif;
 }
 
 .game-title {
     margin: 0 0 1rem;
+    font-family: Roboto, sans-serif;
 }
 
 .game-description {
     margin-bottom: 1rem;
+    font-family: Roboto, sans-serif;
 }
 
 .control-button {
     padding: 0.5rem 1rem;
     cursor: pointer;
-    background: var(--highlight);
-    color: white;
+    background: var(--button-background);
+    color: var(--text); /* Ensure button text color is set to var(--text) */
     border: none;
     border-radius: 4px;
     font-size: 1rem;
+    font-family: Roboto, sans-serif;
 }
 
 .control-button:hover {
     opacity: 0.9;
+    font-family: Roboto, sans-serif;
 }
 
 
 /* Reusable nav box component */
 .nav-box {
     background: var(--background);
-    padding: 1rem;
-    margin-bottom: 2rem;
-    border-radius: 8px;
+    padding: 4rem;
+    padding-left: 18px;
+    padding-right: 1px;
+    border-radius: 2px;
+    padding-bottom: 100rem;
+    font-family: Roboto, sans-serif;
+    position: fixed;
+    top: 0;
+    left: 10%;
+    transform: translateX(-100%);
+    width: 100%;
+    max-width: 68px;
+    z-index: 100;
 }
 
 .nav-box ul {
@@ -148,6 +219,7 @@ a:hover {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
+    font-family: Roboto, sans-serif;
 }
 
 /* Reusable content container */
@@ -155,51 +227,50 @@ a:hover {
     max-width: var(--content-max-width);
     margin: 0 auto;
     padding: var(--content-padding);
+    font-family: Roboto, sans-serif;
+    padding-top: calc(var(--header-height) + 20px); /* Consistent padding for all pages */
+    position: relative;
+    z-index: 1;
 }
 
 /* Reusable image component */
 .image-container {
     margin: 2rem 0;
     text-align: center;
+    font-family: Roboto, sans-serif;
 }
 
 .image-container img {
     max-width: 100%;
     height: auto;
+    font-family: Roboto, sans-serif;
+    padding: var(--content-padding);
 }
 
 .image-container figcaption {
     color: var(--highlight);
     margin-top: 0.5rem;
+    font-family: Roboto, sans-serif;
 }
 
 /* Basic responsive rules */
 @media (max-width: 768px) {
     .nav-box ul {
         flex-direction: column;
+        font-family: Roboto, sans-serif;
     }
 }
 
-pre {
-    background-color: var(--foreground);
-    border-radius: 6px;
-    padding: 16px;
-    margin: 20px 0;
-    overflow: auto;
-    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-    position: relative;
-}
-
-/* Style the actual code inside */
 pre code {
     font-size: 14px;
     line-height: 1.5;
     display: block;
     tab-size: 4;
+    font-family: Roboto, sans-serif;
 }
 
-/* Optional: Add a subtle border */
-pre {
-    border: 1px solid var(--highlight);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+.main-content {
+    padding-top: calc(var(--header-height) + 20px); /* Consistent padding for all pages */
+    position: relative;
+    z-index: 1;
 }

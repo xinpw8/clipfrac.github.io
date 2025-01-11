@@ -91,3 +91,35 @@ document.addEventListener('DOMContentLoaded', () => {
         randomizeGame();
     }
 });
+
+// Replace the zoom prevention code with this:
+(function() {
+    // Force-prevent zoom
+    window.addEventListener('keydown', function(e) {
+        if ((e.ctrlKey || e.metaKey) && (e.key === '+' || e.key === '-' || e.key === '=')) {
+            e.preventDefault();
+            return false;
+        }
+    }, false);
+    
+    window.addEventListener('wheel', function(e) {
+        if (e.ctrlKey || e.metaKey) {
+            e.preventDefault();
+            return false;
+        }
+    }, { passive: false });
+
+    // Disable zoom completely via JavaScript
+    document.documentElement.style.zoom = 1.0;
+    document.documentElement.style.setProperty('zoom', '1.0', 'important');
+    
+    // Monitor and reset zoom continuously
+    const checkAndResetZoom = () => {
+        if (Math.abs(window.devicePixelRatio - 1.0) > 0.01) {
+            document.documentElement.style.zoom = 1.0;
+            document.documentElement.style.setProperty('zoom', '1.0', 'important');
+        }
+    };
+    
+    setInterval(checkAndResetZoom, 100);
+})();

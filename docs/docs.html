@@ -1,25 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+    <style>
+        html { background: #181310; }
+        body { opacity: 1 !important; }
+    </style>
+    <title>Clipfrac</title>
     <meta charset="UTF-8">
-    <title>BET Docs</title>
     <link rel="stylesheet" href="styles.css">
+    <meta name="theme-color" content="#181310">
+    <meta name="color-scheme" content="dark">
 </head>
 <body>
+    <nav class="nav-box">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="product.html">Product</a></li>
+            <li><a href="ocean.html">Ocean</a></li>
+            <li><a href="docs.html">Docs</a></li>
+            <li><a href="blog.html">Blog</a></li>
+        </ul>
+    </nav>
     <main class="content">
-        <nav class="nav-box">
-            <ul>
-                <li><a href="#post-1">BET Document</a></li>
-            </ul>
-        </nav>
+        <div class="title-content">
+            <p>Website layout by Joseph Suarez.</p>
+            <p>Practicing web design.</p>
+        </div>
 
-        <p>PufferLib is a great RL library that makes RL just work.</p>
-                <ul>
-                    <li><strong>Layout and web design borrowed from Joseph Suarez</strong> 
-                </ul>
-            </header>
-        </article>
+        <div class="demo-showcase">
+            <div class="featured-game-container">
+                <iframe src="assets/enduro/game.html" class="featured-game" title="Featured Game"></iframe>
+            </div>
+            <div class="game-info">
+                <h3 class="game-title">Enduro</h3>
+                <p class="game-description">
+                    Enduro is a racing game where you must avoid other cars on the road.
+                </p>
+                <div class="demo-controls">
+                    <button class="control-button" onclick="randomizeGame()">
+                        ⚄ Try Another Env
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-header">Contributors</h2>
+        <div class="contributors">
+            <div class="contributor">
+                <strong>Joseph Suarez</strong>
+                <span>Website design, theme, and layout by Joseph Suarez.</span>
+            </div>
+            <div class="contributor">
+                <strong>BET</strong>
+                <span>Okay.</span>
+            </div>
+        </div>
     </main>
+    <script src="games.js"></script>
+    <script src="main.js"></script>
+    <noscript>
+        <style>
+            .main-content {
+                visibility: visible;
+            }
+        </style>
+    </noscript>
 </body>
 </html>
