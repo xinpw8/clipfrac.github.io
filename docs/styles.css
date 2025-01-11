@@ -1,3 +1,8 @@
+@viewport {
+    zoom: 1.0;
+    width: device-width;
+}
+
 * {
     -ms-content-zooming: none;
     -ms-touch-action: pan-x pan-y;
@@ -10,6 +15,7 @@ html {
     -ms-text-size-adjust: none !important;
     -webkit-text-size-adjust: none !important;
     text-size-adjust: none !important;
+    min-width: var(--min-width);
 }
 
 :root {
@@ -22,12 +28,18 @@ html {
     --content-padding: 100px;
     --header-height: 10px;
     color-scheme: dark; /* Helps some browsers pre-apply dark mode */
+    --nav-width: 80px;
+    --nav-offset: 10%;
+    --min-width: 320px;  /* Minimum width for content */
+    --max-width: 1440px; /* Maximum width for content */
+    --page-height: 100vh;
 }
 
 html {
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
+    min-width: var(--min-width);
+    width: 100%;
+    height: 100%;
+    overflow-x: auto;
     background: var(--foreground);
 }
 
@@ -35,9 +47,10 @@ html {
 body {
     margin: 0;
     padding: 0;
-    width: 100vw;
+    min-width: var(--min-width);
+    width: 100%;
     min-height: 100vh;
-    overflow-x: hidden;
+    overflow-x: auto;
     -webkit-text-size-adjust: none;
     touch-action: manipulation;
     background: var(--foreground);
@@ -61,12 +74,27 @@ body {
 
 /* Force content to stay in viewport */
 .content, .product-content {
+    flex: 1;
+    min-height: 100vh;
+    margin-left: var(--nav-width);
+    padding: 20px;
+    box-sizing: border-box;
+    position: relative;
+    overflow-x: hidden;
+    z-index: 2;
+    background: var(--foreground);
+    width: calc(100% - var(--nav-width));
+    min-width: calc(var(--min-width) - var(--nav-width));
+    max-width: calc(var(--max-width) - var(--nav-width));
+}
+
+.content, .product-content {
     width: 100%;
     min-height: 100vh;
-    overflow-x: hidden;
-    padding-left: calc(10% + 68px); /* Account for nav-box width */
+    padding-left: calc(10% + 68px);
     position: relative;
-    margin-left: 0;
+    z-index: 1;
+    background: var(--foreground);
     box-sizing: border-box;
 }
 
@@ -144,6 +172,11 @@ a:hover {
     font-family: Roboto, sans-serif;
     min-height: 100vh;
     padding-top: 40px; /* Add space for nav on game pages */
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 20px 0;
+    box-sizing: border-box;
 }
 
 .featured-game {
@@ -153,6 +186,9 @@ a:hover {
     margin: 0 auto;
     border: none;
     font-family: Roboto, sans-serif;
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 16/9;
 }
 
 .featured-game-container {
@@ -163,6 +199,10 @@ a:hover {
     padding: 0;
     background: none;
     font-family: Roboto, sans-serif;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
 }
 
 .featured-game-container:hover {
@@ -221,13 +261,12 @@ a:hover {
     font-family: Roboto, sans-serif;
     position: fixed;
     top: 0;
-    left: 10%;
-    transform: translateX(-100%);
-    width: 100%;
-    max-width: 68px;
+    left: 0;
+    width: var(--nav-width);
+    height: var(--page-height);
     z-index: 10;
-    height: 100vh;
-    overflow-y: auto;
+    overflow-y: visible;
+    box-sizing: border-box;
 }
 
 .nav-box ul {
@@ -249,6 +288,10 @@ a:hover {
     padding-top: calc(var(--header-height) + 20px); /* Consistent padding for all pages */
     position: relative;
     z-index: 1;
+    max-width: calc(var(--max-width) - var(--nav-width));
+    margin-left: var(--nav-width);
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 /* Reusable image component */
@@ -277,6 +320,17 @@ a:hover {
         flex-direction: column;
         font-family: Roboto, sans-serif;
     }
+
+    .nav-box {
+        width: 50px;
+        padding-left: 10px;
+    }
+
+    .content, .product-content {
+        margin-left: 50px;
+        width: calc(100% - 50px);
+        padding: 10px;
+    }
 }
 
 pre code {
@@ -289,9 +343,9 @@ pre code {
 
 /* Update main content positioning */
 .main-content {
-    padding-top: var(--header-height);
-    position: relative;
     width: 100%;
     min-height: 100vh;
     box-sizing: border-box;
+    position: relative;
+    z-index: 2;
 }

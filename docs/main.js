@@ -1,3 +1,28 @@
+// Initialize zoom before anything else
+(function initZoom() {
+    // Force zoom reset
+    document.documentElement.style.zoom = "100%";
+    
+    // Backup method using transform
+    document.documentElement.style.transform = "scale(1)";
+    document.documentElement.style.transformOrigin = "top left";
+    
+    // For Firefox
+    document.documentElement.style.MozTransform = "scale(1)";
+    
+    // For Safari
+    document.documentElement.style.WebkitTransform = "scale(1)";
+    
+    // Prevent zoom changes
+    document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey || e.metaKey) {
+            if (e.key === '+' || e.key === '-' || e.key === '=') {
+                e.preventDefault();
+            }
+        }
+    });
+})();
+
 function resizeGame() {
     const container = document.querySelector('.featured-game-container');
     const iframe = document.querySelector('.featured-game');
