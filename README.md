@@ -1,1 +1,2 @@
-# clipfrac.com
+# clipfrac.github.io
+www.clipfrac.com
