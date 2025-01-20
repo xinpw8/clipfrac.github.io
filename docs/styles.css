@@ -27,11 +27,14 @@ html {
     --content-max-width: 1280px;
     --content-padding: 100px;
     --header-height: 10px;
-    color-scheme: dark; /* Helps some browsers pre-apply dark mode */
+    color-scheme: dark;
+    /* Helps some browsers pre-apply dark mode */
     --nav-width: 80px;
     --nav-offset: 10%;
-    --min-width: 320px;  /* Minimum width for content */
-    --max-width: 1440px; /* Maximum width for content */
+    --min-width: 320px;
+    /* Minimum width for content */
+    --max-width: 1440px;
+    /* Maximum width for content */
     --page-height: 100vh;
 }
 
@@ -73,7 +76,8 @@ body {
 }
 
 /* Force content to stay in viewport */
-.content, .product-content {
+.content,
+.dingcad-content {
     flex: 1;
     min-height: 100vh;
     margin-left: var(--nav-width);
@@ -88,7 +92,8 @@ body {
     max-width: calc(var(--max-width) - var(--nav-width));
 }
 
-.content, .product-content {
+.content,
+.dingcad-content {
     width: 100%;
     min-height: 100vh;
     padding-left: calc(10% + 68px);
@@ -98,13 +103,16 @@ body {
     box-sizing: border-box;
 }
 
-p, li {
+p,
+li {
     line-height: 1.6;
-    color: var(--text); /* Ensure paragraph and list item text color is set to var(--text) */
+    color: var(--text);
+    /* Ensure paragraph and list item text color is set to var(--text) */
     font-family: Roboto, sans-serif;
 }
 
-code, pre {
+code,
+pre {
     font-family: Roboto, sans-serif;
 }
 
@@ -152,7 +160,8 @@ h2 {
 p {
     line-height: 1.6;
     margin-bottom: 1rem;
-    color: var(--text); /* Ensure paragraph text color is set to var(--text) */
+    color: var(--text);
+    /* Ensure paragraph text color is set to var(--text) */
     font-family: Roboto, sans-serif;
 }
 
@@ -171,7 +180,8 @@ a:hover {
     margin-bottom: 4rem;
     font-family: Roboto, sans-serif;
     min-height: 100vh;
-    padding-top: 40px; /* Add space for nav on game pages */
+    padding-top: 40px;
+    /* Add space for nav on game pages */
     width: 100%;
     max-width: 100%;
     margin: 0;
@@ -181,7 +191,8 @@ a:hover {
 
 .featured-game {
     display: block;
-    width: 1920px;  /* or whatever the game's native width is */
+    width: 1920px;
+    /* or whatever the game's native width is */
     height: 1080px;
     margin: 0 auto;
     border: none;
@@ -206,15 +217,20 @@ a:hover {
 }
 
 .featured-game-container:hover {
-    outline: 4px solid #f1f1f1; /* Highlight color, does not affect layout */
-    box-shadow: 0 0 15px #f1f1f1; /* Adds a glowing effect */
-    transition: outline 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+    outline: 4px solid #f1f1f1;
+    /* Highlight color, does not affect layout */
+    box-shadow: 0 0 15px #f1f1f1;
+    /* Adds a glowing effect */
+    transition: outline 0.3s ease, box-shadow 0.3s ease;
+    /* Smooth transition */
     font-family: Roboto, sans-serif;
 }
 
-.featured-game-container:active{
-    outline: 4px solid #00ffff; /* Highlight color, does not affect layout */
-    box-shadow: 0 0 15px #00ffff; /* Adds a glowing effect */
+.featured-game-container:active {
+    outline: 4px solid #00ffff;
+    /* Highlight color, does not affect layout */
+    box-shadow: 0 0 15px #00ffff;
+    /* Adds a glowing effect */
     font-family: Roboto, sans-serif;
 }
 
@@ -237,7 +253,8 @@ a:hover {
     padding: 0.5rem 1rem;
     cursor: pointer;
     background: var(--button-background);
-    color: var(--text); /* Ensure button text color is set to var(--text) */
+    color: var(--text);
+    /* Ensure button text color is set to var(--text) */
     border: none;
     border-radius: 4px;
     font-size: 1rem;
@@ -285,7 +302,8 @@ a:hover {
     margin: 0 auto;
     padding: var(--content-padding);
     font-family: Roboto, sans-serif;
-    padding-top: calc(var(--header-height) + 20px); /* Consistent padding for all pages */
+    padding-top: calc(var(--header-height) + 20px);
+    /* Consistent padding for all pages */
     position: relative;
     z-index: 1;
     max-width: calc(var(--max-width) - var(--nav-width));
@@ -326,7 +344,8 @@ a:hover {
         padding-left: 10px;
     }
 
-    .content, .product-content {
+    .content,
+    .dingcad-content {
         margin-left: 50px;
         width: calc(100% - 50px);
         padding: 10px;
