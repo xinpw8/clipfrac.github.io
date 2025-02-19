@@ -1,7 +1,7 @@
 const games = {
     enduro: {
         title: "Enduro",
-        description: `A fast version of the classic Atari game. By Daniel Addis.
+        description: `A fast version of the classic Atari game. By Dan Advantage.
 
 Score points by passing cars. Pass enough cars before time runs out to move on to the next day.
 
