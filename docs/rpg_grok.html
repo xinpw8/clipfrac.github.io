@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grok RPG - Clipfrac</title>
+    <style>
+        html {
+            background: #181310;
+        }
+
+        body {
+            opacity: 1 !important;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #111;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        #gameContainer {
+            position: relative;
+            width: 800px;
+            height: 600px;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            border: 2px solid #333;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        }
+
+        #ui {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 800px;
+            height: 600px;
+            pointer-events: none;
+            color: white;
+            font-size: 16px;
+        }
+
+        #stats,
+        #inventory {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        #stats {
+            top: 10px;
+            left: 10px;
+        }
+
+        #inventory {
+            top: 10px;
+            right: 10px;
+            text-align: right;
+        }
+
+        #dialog {
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border-radius: 5px;
+            max-width: 600px;
+            display: none;
+        }
+
+        #questLog {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px;
+            border-radius: 5px;
+            width: 500px;
+            max-height: 400px;
+            overflow-y: auto;
+            display: none;
+            pointer-events: auto;
+        }
+
+        #questLog h2 {
+            color: #ffd700;
+            text-align: center;
+        }
+
+        .quest {
+            margin-bottom: 10px;
+        }
+
+        .quest.completed {
+            color: #88ff88;
+        }
+
+        #questLogClose {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .notification {
+            position: absolute;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+    </style>
+    <link rel="stylesheet" href="styles.css">
+    <meta name="theme-color" content="#181310">
+    <meta name="color-scheme" content="dark">
+</head>
+
+<body>
+    <nav class="nav-box">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dingcad.html">dingcad</a></li>
+            <li><a href="ocean.html">Ocean</a></li>
+            <li><a href="docs.html">Docs</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="rpg_gemini.html">Gemini RPG</a></li>
+            <li><a href="rpg_grok.html">Grok RPG</a></li>
+        </ul>
+    </nav>
+    <main class="content">
+        <h1>Grok RPG</h1>
+        <p>Content coming soon...</p>
+    </main>
+    <div id="gameContainer">
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        <div id="ui">
+            <div id="stats">
+                Health: <span id="healthStat">100</span><br>
+                Mana: <span id="manaStat">50</span><br>
+                Level: <span id="levelStat">1</span>
+            </div>
+            <div id="inventory">
+                Gold: <span id="goldStat">0</span><br>
+                Items: <span id="itemsStat">None</span><br>
+                [WASD] Move | [Space] Attack | [E] Interact | [Q] Quests
+            </div>
+            <div id="dialog"></div>
+            <div id="questLog">
+                <h2>Quest Log</h2>
+                <div id="questList"></div>
+                <button id="questLogClose">X</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game Constants
+        const TILE_SIZE = 32;
+        const MAP_WIDTH = 50;
+        const MAP_HEIGHT = 50;
+        const PLAYER_SPEED = 3;
+        const ENEMY_SPEED = 1;
+        const PROJECTILE_SPEED = 4;
+
+        // Game State
+        let canvas = document.getElementById('gameCanvas');
+        let ctx = canvas.getContext('2d');
+        let lastTime = 0;
+        let player = {
+            x: 400,
+            y: 300,
+            health: 100,
+            maxHealth: 100,
+            mana: 50,
+            maxMana: 50,
+            level: 1,
+            gold: 0,
+            items: [],
+            attackCooldown: 0
+        };
+        let cameraX = 0;
+        let cameraY = 0;
+        let keys = {};
+        let map = [];
+        let enemies = [];
+        let coins = [];
+        let projectiles = [];
+        let npcs = [];
+        let quests = [];
+        let activeDialog = null;
+        let questLogOpen = false;
+        let textures = {};
+
+        // Event Listeners
+        window.addEventListener('keydown', (e) => {
+            keys[e.key.toLowerCase()] = true;
+            if (e.key.toLowerCase() === 'q') toggleQuestLog();
+            if (e.key.toLowerCase() === 'e' && activeDialog) activeDialog = null;
+        });
+        window.addEventListener('keyup', (e) => keys[e.key.toLowerCase()] = false);
+        document.getElementById('questLogClose').addEventListener('click', () => {
+            questLogOpen = false;
+            document.getElementById('questLog').style.display = 'none';
+        });
+
+        // Texture Generation
+        function generateTexture(name, drawFunc) {
+            let tempCanvas = document.createElement('canvas');
+            tempCanvas.width = TILE_SIZE;
+            tempCanvas.height = TILE_SIZE;
+            let tCtx = tempCanvas.getContext('2d');
+            drawFunc(tCtx);
+            textures[name] = tempCanvas;
+        }
+
+        generateTexture('grass', (ctx) => {
+            ctx.fillStyle = '#4CAF50';
+            ctx.fillRect(0, 0, TILE_SIZE, TILE_SIZE);
+            for (let i = 0; i < 10; i++) {
+                ctx.fillStyle = `rgba(0, 100, 0, ${Math.random()})`;
+                ctx.fillRect(Math.random() * TILE_SIZE, Math.random() * TILE_SIZE, 3, 3);
+            }
+        });
+
+        generateTexture('wall', (ctx) => {
+            ctx.fillStyle = '#616161';
+            ctx.fillRect(0, 0, TILE_SIZE, TILE_SIZE);
+            ctx.strokeStyle = '#424242';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(2, 2, TILE_SIZE - 4, TILE_SIZE - 4);
+        });
+
+        generateTexture('player', (ctx) => {
+            ctx.fillStyle = '#F44336';
+            ctx.beginPath();
+            ctx.arc(TILE_SIZE / 2, TILE_SIZE / 2, 10, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(TILE_SIZE / 2 - 2, TILE_SIZE / 2 - 4, 4, 4); // Eyes
+        });
+
+        generateTexture('enemy', (ctx) => {
+            ctx.fillStyle = '#2196F3';
+            ctx.beginPath();
+            ctx.arc(TILE_SIZE / 2, TILE_SIZE / 2, 10, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#FF9800';
+            ctx.fillRect(TILE_SIZE / 2 - 3, TILE_SIZE / 2 - 3, 6, 6); // Eyes
+        });
+
+        generateTexture('coin', (ctx) => {
+            ctx.fillStyle = '#FFD700';
+            ctx.beginPath();
+            ctx.arc(TILE_SIZE / 2, TILE_SIZE / 2, 8, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#FFA000';
+            ctx.fillText('$', TILE_SIZE / 2 - 3, TILE_SIZE / 2 + 4);
+        });
+
+        generateTexture('npc', (ctx) => {
+            ctx.fillStyle = '#4CAF50';
+            ctx.beginPath();
+            ctx.arc(TILE_SIZE / 2, TILE_SIZE / 2, 10, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillText('!', TILE_SIZE / 2 - 3, TILE_SIZE / 2 + 4);
+        });
+
+        generateTexture('projectile', (ctx) => {
+            ctx.fillStyle = '#FF5722';
+            ctx.beginPath();
+            ctx.arc(TILE_SIZE / 2, TILE_SIZE / 2, 5, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#FFFF00';
+            for (let i = 0; i < 4; i++) {
+                let angle = (Math.PI / 2) * i;
+                ctx.fillRect(TILE_SIZE / 2 + Math.cos(angle) * 5 - 1, TILE_SIZE / 2 + Math.sin(angle) * 5 - 1, 2, 2);
+            }
+        });
+
+        // World Generation
+        function generateMap() {
+            for (let y = 0; y < MAP_HEIGHT; y++) {
+                map[y] = [];
+                for (let x = 0; x < MAP_WIDTH; x++) {
+                    map[y][x] = (x === 0 || x === MAP_WIDTH - 1 || y === 0 || y === MAP_HEIGHT - 1) ? 'wall' : 'grass';
+                }
+            }
+            // Add some random walls
+            for (let i = 0; i < 20; i++) {
+                let x = Math.floor(Math.random() * (MAP_WIDTH - 2)) + 1;
+                let y = Math.floor(Math.random() * (MAP_HEIGHT - 2)) + 1;
+                map[y][x] = 'wall';
+            }
+        }
+
+        // Entity Spawning
+        function spawnEntities() {
+            // Enemies
+            for (let i = 0; i < 10; i++) {
+                let x, y;
+                do {
+                    x = Math.random() * (MAP_WIDTH - 2) * TILE_SIZE + TILE_SIZE;
+                    y = Math.random() * (MAP_HEIGHT - 2) * TILE_SIZE + TILE_SIZE;
+                } while (isCollision(x, y));
+                enemies.push({ x, y, health: 30, spellCooldown: 0 });
+            }
+
+            // Coins
+            for (let i = 0; i < 20; i++) {
+                let x, y;
+                do {
+                    x = Math.random() * (MAP_WIDTH - 2) * TILE_SIZE + TILE_SIZE;
+                    y = Math.random() * (MAP_HEIGHT - 2) * TILE_SIZE + TILE_SIZE;
+                } while (isCollision(x, y));
+                coins.push({ x, y });
+            }
+
+            // NPC
+            npcs.push({
+                x: 5 * TILE_SIZE,
+                y: 5 * TILE_SIZE,
+                dialog: "Greetings! Please defeat 5 enemies for me.",
+                questId: 1
+            });
+        }
+
+        // Quests
+        function createQuests() {
+            quests.push({
+                id: 1,
+                name: "Enemy Slayer",
+                description: "Defeat 5 enemies",
+                reward: { gold: 50, item: "Health Potion" },
+                progress: 0,
+                target: 5,
+                completed: false
+            });
+        }
+
+        // Game Logic
+        function updateCamera() {
+            cameraX = player.x - canvas.width / 2;
+            cameraY = player.y - canvas.height / 2;
+            cameraX = Math.max(0, Math.min(cameraX, MAP_WIDTH * TILE_SIZE - canvas.width));
+            cameraY = Math.max(0, Math.min(cameraY, MAP_HEIGHT * TILE_SIZE - canvas.height));
+        }
+
+        function isCollision(x, y) {
+            let tileX = Math.floor(x / TILE_SIZE);
+            let tileY = Math.floor(y / TILE_SIZE);
+            if (tileX < 0 || tileX >= MAP_WIDTH || tileY < 0 || tileY >= MAP_HEIGHT) return true;
+            return map[tileY][tileX] === 'wall';
+        }
+
+        function update() {
+            // Player Movement
+            let dx = 0, dy = 0;
+            if (keys['w']) dy -= PLAYER_SPEED;
+            if (keys['s']) dy += PLAYER_SPEED;
+            if (keys['a']) dx -= PLAYER_SPEED;
+            if (keys['d']) dx += PLAYER_SPEED;
+            let newX = player.x + dx;
+            let newY = player.y + dy;
+            if (!isCollision(newX, newY)) {
+                player.x = newX;
+                player.y = newY;
+            }
+            updateCamera();
+
+            // Player Attack
+            if (keys[' '] && player.attackCooldown <= 0) {
+                player.attackCooldown = 30;
+                for (let i = enemies.length - 1; i >= 0; i--) {
+                    let enemy = enemies[i];
+                    let dist = Math.hypot(enemy.x - player.x, enemy.y - player.y);
+                    if (dist < 50) {
+                        enemy.health -= 10;
+                        if (enemy.health <= 0) {
+                            enemies.splice(i, 1);
+                            updateQuestProgress(1, 1);
+                            if (Math.random() < 0.3) coins.push({ x: enemy.x, y: enemy.y });
+                        }
+                    }
+                }
+            }
+            if (player.attackCooldown > 0) player.attackCooldown--;
+
+            // Enemy AI
+            for (let enemy of enemies) {
+                let dx = player.x - enemy.x;
+                let dy = player.y - enemy.y;
+                let dist = Math.hypot(dx, dy);
+                if (dist > 0) {
+                    enemy.x += (dx / dist) * ENEMY_SPEED;
+                    enemy.y += (dy / dist) * ENEMY_SPEED;
+                }
+                if (enemy.spellCooldown <= 0) {
+                    projectiles.push({
+                        x: enemy.x,
+                        y: enemy.y,
+                        vx: (player.x - enemy.x) / dist * PROJECTILE_SPEED,
+                        vy: (player.y - enemy.y) / dist * PROJECTILE_SPEED
+                    });
+                    enemy.spellCooldown = 60;
+                } else {
+                    enemy.spellCooldown--;
+                }
+            }
+
+            // Projectiles
+            for (let i = projectiles.length - 1; i >= 0; i--) {
+                let proj = projectiles[i];
+                proj.x += proj.vx;
+                proj.y += proj.vy;
+                let dist = Math.hypot(proj.x - player.x, proj.y - player.y);
+                if (dist < 15) {
+                    player.health -= 5;
+                    projectiles.splice(i, 1);
+                    if (player.health <= 0) player.health = 0; // Game Over logic can be added
+                } else if (proj.x < 0 || proj.x > MAP_WIDTH * TILE_SIZE || proj.y < 0 || proj.y > MAP_HEIGHT * TILE_SIZE) {
+                    projectiles.splice(i, 1);
+                }
+            }
+
+            // Coin Collection
+            for (let i = coins.length - 1; i >= 0; i--) {
+                let coin = coins[i];
+                if (Math.hypot(coin.x - player.x, coin.y - player.y) < 20) {
+                    player.gold += 10;
+                    coins.splice(i, 1);
+                    showNotification("+10 Gold");
+                }
+            }
+
+            // NPC Interaction
+            if (keys['e']) {
+                for (let npc of npcs) {
+                    if (Math.hypot(npc.x - player.x, npc.y - player.y) < 50) {
+                        activeDialog = npc.dialog;
+                        if (!quests.find(q => q.id === npc.questId && !q.completed)) {
+                            quests.find(q => q.id === npc.questId).progress = 0; // Reset if completed
+                        }
+                        break;
+                    }
+                }
+            }
+
+            // Mana Regeneration
+            if (player.mana < player.maxMana) player.mana += 0.1;
+        }
+
+        function updateQuestProgress(questId, amount) {
+            let quest = quests.find(q => q.id === questId);
+            if (quest && !quest.completed) {
+                quest.progress += amount;
+                if (quest.progress >= quest.target) {
+                    quest.completed = true;
+                    player.gold += quest.reward.gold;
+                    if (quest.reward.item) player.items.push(quest.reward.item);
+                    showNotification(`Quest Completed: ${quest.name} (+${quest.reward.gold} Gold, ${quest.reward.item})`);
+                }
+            }
+        }
+
+        function toggleQuestLog() {
+            questLogOpen = !questLogOpen;
+            let questLog = document.getElementById('questLog');
+            questLog.style.display = questLogOpen ? 'block' : 'none';
+            if (questLogOpen) {
+                let questList = document.getElementById('questList');
+                questList.innerHTML = '';
+                quests.forEach(q => {
+                    let div = document.createElement('div');
+                    div.className = 'quest' + (q.completed ? ' completed' : '');
+                    div.innerHTML = `<strong>${q.name}</strong><br>${q.description}<br>Progress: ${q.progress}/${q.target}`;
+                    questList.appendChild(div);
+                });
+            }
+        }
+
+        function showNotification(text) {
+            let noti = document.createElement('div');
+            noti.className = 'notification';
+            noti.textContent = text;
+            document.getElementById('ui').appendChild(noti);
+            setTimeout(() => {
+                noti.style.opacity = '1';
+                setTimeout(() => {
+                    noti.style.opacity = '0';
+                    setTimeout(() => noti.remove(), 500);
+                }, 2000);
+            }, 10);
+        }
+
+        // Rendering
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw Map
+            for (let y = 0; y < MAP_HEIGHT; y++) {
+                for (let x = 0; x < MAP_WIDTH; x++) {
+                    let screenX = x * TILE_SIZE - cameraX;
+                    let screenY = y * TILE_SIZE - cameraY;
+                    if (screenX > -TILE_SIZE && screenX < canvas.width && screenY > -TILE_SIZE && screenY < canvas.height) {
+                        ctx.drawImage(textures[map[y][x]], screenX, screenY);
+                    }
+                }
+            }
+
+            // Draw Coins
+            coins.forEach(coin => {
+                let screenX = coin.x - cameraX;
+                let screenY = coin.y - cameraY;
+                ctx.drawImage(textures['coin'], screenX - TILE_SIZE / 2, screenY - TILE_SIZE / 2);
+            });
+
+            // Draw Enemies
+            enemies.forEach(enemy => {
+                let screenX = enemy.x - cameraX;
+                let screenY = enemy.y - cameraY;
+                ctx.drawImage(textures['enemy'], screenX - TILE_SIZE / 2, screenY - TILE_SIZE / 2);
+            });
+
+            // Draw Projectiles
+            projectiles.forEach(proj => {
+                let screenX = proj.x - cameraX;
+                let screenY = proj.y - cameraY;
+                ctx.drawImage(textures['projectile'], screenX - TILE_SIZE / 2, screenY - TILE_SIZE / 2);
+            });
+
+            // Draw NPCs
+            npcs.forEach(npc => {
+                let screenX = npc.x - cameraX;
+                let screenY = npc.y - cameraY;
+                ctx.drawImage(textures['npc'], screenX - TILE_SIZE / 2, screenY - TILE_SIZE / 2);
+            });
+
+            // Draw Player
+            ctx.drawImage(textures['player'], player.x - cameraX - TILE_SIZE / 2, player.y - cameraY - TILE_SIZE / 2);
+
+            // UI Updates
+            document.getElementById('healthStat').textContent = Math.floor(player.health);
+            document.getElementById('manaStat').textContent = Math.floor(player.mana);
+            document.getElementById('levelStat').textContent = player.level;
+            document.getElementById('goldStat').textContent = player.gold;
+            document.getElementById('itemsStat').textContent = player.items.join(', ') || 'None';
+
+            let dialog = document.getElementById('dialog');
+            if (activeDialog) {
+                dialog.style.display = 'block';
+                dialog.textContent = activeDialog;
+            } else {
+                dialog.style.display = 'none';
+            }
+        }
+
+        // Game Loop
+        function gameLoop(timestamp) {
+            if (timestamp - lastTime >= 1000 / 60) {
+                lastTime = timestamp;
+                update();
+                draw();
+            }
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Initialization
+        generateMap();
+        spawnEntities();
+        createQuests();
+        requestAnimationFrame(gameLoop);
+    </script>
+</body>
+
+</html>
